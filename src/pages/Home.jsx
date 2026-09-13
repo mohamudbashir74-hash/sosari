@@ -10,11 +10,16 @@ import Reveal, { RevealGroup, RevealItem } from "../components/Reveal";
 import { TiltCard } from "../components/Motion";
 import { IconChart, IconUsers, IconDoc, IconBulb, IconDb, IconGlobe, IconSearch } from "../components/Icons";
 import heroPhoto from "../assets/hero-photo.jpg";
+import heroPhoto1 from "../assets/hero-photo1.jpg";
+import heroPhoto2 from "../assets/hero-photo2.jpg";
+
+const HERO_PHOTOS = [heroPhoto, heroPhoto1, heroPhoto2];
+const HERO_SLIDE_MS = 4000;
 
 // Splits "...in Somalia." off the end of the headline so it can be
 // rendered in the accent (teal) color, like the SOSARI brand hero.
 function splitHeroTitle(title) {
-  const match = title.match(/(.*?)(\bin\s+Somalia\.?\s*)$/i);
+  const match = title.match(/(.*?)(\bSomalia\b.*)$/i);
   if (!match) return { lead: title, accent: "" };
   return { lead: match[1], accent: match[2] };
 }
@@ -30,6 +35,14 @@ export default function Home() {
   const [hero, setHero] = useState(DEFAULT_HERO);
   const [featured, setFeatured] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [heroSlide, setHeroSlide] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setHeroSlide((i) => (i + 1) % HERO_PHOTOS.length);
+    }, HERO_SLIDE_MS);
+    return () => clearInterval(id);
+  }, []);
 
   useEffect(() => {
     let mounted = true;
@@ -66,60 +79,34 @@ export default function Home() {
       <header className="hero heroV2">
         <div className="heroV2-in">
           <div className="heroV2-left">
+            <span className="heroBadge"><IconChart /> {hero.eyebrow}</span>
+
             <Reveal as="h1">
               {lead}
               {accent && <span className="accent">{accent}</span>}
             </Reveal>
             <Reveal as="p" delay={0.08}>{hero.text}</Reveal>
             <RevealGroup className="actions" stagger={0.06}>
-              <RevealItem><Link className="btn primary" to="/section/research"><IconSearch /> Explore Research</Link></RevealItem>
-              <RevealItem><Link className="btn outline" to="/section/data"><IconChart /> Explore Data</Link></RevealItem>
-              <RevealItem><Link className="btn outline" to="/partner"><IconUsers /> Work With SOSARI</Link></RevealItem>
+              <RevealItem><Link className="btn gold" to="/partner">Explore Our Work →</Link></RevealItem>
+              <RevealItem><Link className="btn playOutline" to="#"><span className="playCircle">▶</span> Watch Video</Link></RevealItem>
             </RevealGroup>
 
-            <RevealGroup className="heroStatsInline" stagger={0.07}>
-              <RevealItem className="heroStatItem">
-                <span className="heroStatIcon"><IconDoc /></span>
-                <div><b>100+</b><span>Research Projects</span></div>
-              </RevealItem>
-              <RevealItem className="heroStatItem">
-                <span className="heroStatIcon"><IconUsers /></span>
-                <div><b>50+</b><span>Partners & Collaborators</span></div>
-              </RevealItem>
-              <RevealItem className="heroStatItem">
-                <span className="heroStatIcon"><IconChart /></span>
-                <div><b>10+</b><span>Years of Impact</span></div>
-              </RevealItem>
-            </RevealGroup>
+            <span className="heroCursive">A Stronger Tomorrow</span>
           </div>
 
           <Reveal as="div" className="heroV2-right" delay={0.15} y={20}>
-            <div className="dotGrid" aria-hidden="true" />
-
-            <svg viewBox="0 0 300 420" className="somaliaGlow" aria-hidden="true">
-              <defs>
-                <linearGradient id="glowFill" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stopColor="#3fd9c7" stopOpacity="0.5" />
-                  <stop offset="100%" stopColor="#0876bd" stopOpacity="0.15" />
-                </linearGradient>
-              </defs>
-              <path
-                d="M68 20 L95 35 L130 25 L165 30 L200 15 L230 20 L250 18 L282 8 L268 50 L250 90 L238 125 L222 160 L205 195 L185 230 L160 260 L130 290 L108 305 L85 320 L55 340 L28 370 L18 395 L6 360 L20 330 L4 300 L22 270 L8 235 L28 205 L14 170 L34 140 L20 105 L40 75 L26 45 Z"
-                fill="url(#glowFill)" stroke="#7fe0d6" strokeWidth="1.5" opacity="0.9" />
-              {[[68,20],[282,8],[205,195],[130,290],[18,395],[8,235],[40,75]].map(([x,y],i) => (
-                <circle key={i} cx={x} cy={y} r="2.6" fill="#bff3ea" />
-              ))}
-            </svg>
-
             {/* Real photo — swap by replacing src/assets/hero-photo.jpg with
-                your own licensed image; the frame/caption stay as-is. */}
+                your own licensed image; the frame stays as-is. */}
             <div className="heroPhotoFrame">
-              <img src={heroPhoto} alt="SOSARI team at work" className="heroPhotoImg" />
-              <div className="heroPhotoScrim" />
-              <div className="heroPhotoCaption">
-                <span>STRONGER DATA<br />BRIGHTER SOMALIA</span>
-                <Link to="/section/data" className="heroPhotoArrow" aria-label="Explore data">→</Link>
-              </div>
+              {HERO_PHOTOS.map((src, i) => (
+                <img
+                  key={src}
+                  src={src}
+                  alt="SOSARI team at work"
+                  className="heroPhotoImg heroPhotoImgSlide"
+                  style={{ opacity: i === heroSlide ? 1 : 0 }}
+                />
+              ))}
             </div>
           </Reveal>
         </div>

@@ -33,7 +33,7 @@ export default function PartnerPage() {
     <div className="sectionPageWrap">
       <header className="pageHero">
         <div className="wrap">
-          <div className="eyebrow">Partner with SOSARI</div>
+          <div className="eyebrow">Work with SOSARI</div>
           <h1>Start a conversation.</h1>
           <p>Bring the question. SOSARI can assemble the appropriate methods, expertise and evidence pathway.</p>
         </div>

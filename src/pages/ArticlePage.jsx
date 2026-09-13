@@ -91,7 +91,7 @@ export default function ArticlePage() {
             </div>
             <div className="actions">
               <Link className="btn outline" to={sectionHref}>View all →</Link>
-              <Link className="btn" to="/partner">Partner With SOSARI →</Link>
+              <Link className="btn" to="/partner">Work With SOSARI →</Link>
             </div>
           </Reveal>
         </div>

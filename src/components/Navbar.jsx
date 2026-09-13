@@ -111,15 +111,12 @@ export default function Navbar() {
               )}
             </div>
           ))}
-          <div className="mi">
-            <Link to="/reports" className={location.pathname === "/reports" ? "navActive" : ""}>Reports</Link>
-          </div>
 
           <button className="searchBtn" aria-label="Search" type="button" title="Search">
             <IconSearch />
           </button>
           <Link className="cta" to="/partner">
-            PARTNER WITH SOSARI <span className="ctaArrow">→</span>
+            WORK WITH SOSARI <span className="ctaArrow">→</span>
           </Link>
         </div>
 
@@ -164,23 +161,13 @@ export default function Navbar() {
                 </Link>
               );
             })}
-            <Link
-              to="/reports"
-              onClick={() => setMobileOpen(false)}
-              className="mobileMenuItem"
-              style={{ "--mmBg": "#eef2f8", "--mmFg": "#0876bd" }}
-            >
-              <span className="mmIcon"><IconDoc /></span>
-              <span className="mmText"><b>Reports</b><span>Download published SOSARI reports</span></span>
-              <span className="mmBtn" aria-label="Open"><IconArrow /></span>
-            </Link>
           </div>
 
           <Link to="/partner" onClick={() => setMobileOpen(false)} className="mobileMenuPartner">
             <span className="mmPartnerIcon"><IconHandshake /></span>
             <span className="mmPartnerText">
               <small>BE A PART OF OUR MISSION</small>
-              <b>PARTNER WITH SOSARI</b>
+              <b>WORK WITH SOSARI</b>
               <span>Stronger data. Brighter Somalia.</span>
             </span>
             <span className="mmBtn mmBtnLight" aria-label="Open"><IconArrow /></span>

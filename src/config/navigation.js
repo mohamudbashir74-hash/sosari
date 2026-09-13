@@ -26,7 +26,7 @@ export const NAV = [
     ],
   },
   {
-    label: "Research",
+    label: "Research Areas",
     key: "research",
     groups: [
       {
@@ -134,6 +134,8 @@ export const NAV = [
       { label: "Evaluation Reports", key: "knowledge/evaluation-reports" },
       { label: "Case Studies", key: "knowledge/case-studies" },
       { label: "Insights & Analysis", key: "knowledge/insights-analysis" },
+      { label: "Publications", key: "knowledge/publications" },
+      { label: "Annual Report", key: "knowledge/annual-report" },
     ],
   },
   {

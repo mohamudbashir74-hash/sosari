@@ -74,7 +74,7 @@ export default function Home() {
             <div className="actions">
               <Link className="btn primary" to="/section/research"><IconSearch /> Explore Research</Link>
               <Link className="btn outline" to="/section/data"><IconChart /> Explore Data</Link>
-              <Link className="btn outline" to="/partner"><IconUsers /> Partner With SOSARI</Link>
+              <Link className="btn outline" to="/partner"><IconUsers /> Work With SOSARI</Link>
             </div>
 
             <div className="heroStatsInline">
@@ -263,7 +263,7 @@ export default function Home() {
         <div className="wrap">
           <Reveal className="ctaBand">
             <div>
-              <div className="eyebrow2">Partner with SOSARI</div>
+              <div className="eyebrow2">Work with SOSARI</div>
               <h2>Have a research, data, policy or evaluation challenge?</h2>
               <p>Bring the question. SOSARI can assemble the appropriate methods, expertise and evidence pathway.</p>
             </div>

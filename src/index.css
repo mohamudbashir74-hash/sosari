@@ -154,7 +154,7 @@ button{font-family:inherit;cursor:pointer}
 
 .somaliaGlow{position:absolute;left:-10px;top:6px;width:190px;height:auto;z-index:1;filter:drop-shadow(0 0 18px rgba(127,224,214,.45))}
 
-.heroPhotoFrame{position:relative;z-index:2;width:350px;height:470px;margin:6px 0 0 30px;border-radius:20px;overflow:hidden;
+.heroPhotoFrame{position:relative;z-index:2;width:650px;height:570px;margin:6px 0 0 30px;border-radius:20px;overflow:hidden;
   box-shadow:0 25px 55px rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.18)}
 .heroPhotoImg{width:100%;height:100%;display:block;object-fit:cover}
 .heroPhotoScrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,20,32,0) 45%,rgba(4,14,22,.85) 100%)}

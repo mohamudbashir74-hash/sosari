@@ -142,7 +142,7 @@ button{font-family:inherit;cursor:pointer}
 .heroV2 h1{font-size:52px;line-height:1.08;letter-spacing:-1.6px;max-width:600px;margin:18px 0 18px;color:#fff}
 .heroV2 h1 .accent{color:#3fd9c7}
 .heroV2 p{max-width:560px;color:#d6e6ef;font-size:16px}
-.heroV2-right{position:relative;min-height:480px}
+.heroV2-right{position:relative;min-height:500px}
 .dotGrid{position:absolute;inset:-20px -20px auto auto;width:340px;height:340px;border-radius:50%;background-image:radial-gradient(rgba(255,255,255,.16) 1px,transparent 1.5px);background-size:14px 14px;opacity:.5;pointer-events:none}
 
 .heroStatsInline{display:flex;gap:26px;margin-top:32px;flex-wrap:wrap}
@@ -154,7 +154,7 @@ button{font-family:inherit;cursor:pointer}
 
 .somaliaGlow{position:absolute;left:-10px;top:6px;width:190px;height:auto;z-index:1;filter:drop-shadow(0 0 18px rgba(127,224,214,.45))}
 
-.heroPhotoFrame{position:relative;z-index:2;width:300px;height:440px;margin:6px 0 0 72px;border-radius:20px;overflow:hidden;
+.heroPhotoFrame{position:relative;z-index:2;width:350px;height:470px;margin:6px 0 0 30px;border-radius:20px;overflow:hidden;
   box-shadow:0 25px 55px rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.18)}
 .heroPhotoImg{width:100%;height:100%;display:block;object-fit:cover}
 .heroPhotoScrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,20,32,0) 45%,rgba(4,14,22,.85) 100%)}
@@ -163,7 +163,7 @@ button{font-family:inherit;cursor:pointer}
 .heroPhotoArrow{flex:none;width:32px;height:32px;border-radius:50%;background:#fff;color:var(--navy);display:flex;align-items:center;justify-content:center;font-weight:900;transition:transform .2s ease}
 .heroPhotoArrow:hover{transform:translateX(3px)}
 
-.floatStack{position:absolute;top:6px;right:0;width:240px;display:flex;flex-direction:column;gap:11px;z-index:3}
+.floatStack{position:absolute;top:6px;right:0;width:222px;display:flex;flex-direction:column;gap:11px;z-index:3}
 .floatCard2{display:flex;align-items:center;gap:11px;border-radius:14px;padding:11px 13px;box-shadow:0 14px 28px rgba(0,0,0,.14);
   transition:transform .22s ease,box-shadow .22s ease}
 .floatCard2:hover{transform:translateY(-3px);box-shadow:0 20px 36px rgba(0,0,0,.18)}

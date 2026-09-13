@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   EmailAuthProvider, reauthenticateWithCredential,
   verifyBeforeUpdateEmail, updatePassword,
 } from "firebase/auth";
-import { auth } from "../firebase";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { auth, db } from "../firebase";
 import { useAdminAuth } from "../contexts/AdminAuthContext";
 
 // Friendly Somali messages for the Firebase Auth error codes most likely
@@ -43,6 +44,37 @@ export default function AdminSettings() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  const [notifEnabled, setNotifEnabled] = useState(false);
+  const [notifBusy, setNotifBusy] = useState(false);
+  const [notifMsg, setNotifMsg] = useState("");
+
+  useEffect(() => {
+    getDoc(doc(db, "sosariAdmin", "admin"))
+      .then((snap) => setNotifEnabled(!!snap.data()?.notificationsEnabled))
+      .catch(() => {});
+  }, []);
+
+  async function toggleNotifications() {
+    setNotifMsg("");
+    if (!notifEnabled) {
+      if (typeof Notification === "undefined") {
+        setNotifMsg("Browser-kan ma taageerayo notifications.");
+        return;
+      }
+      setNotifBusy(true);
+      const permission = await Notification.requestPermission();
+      setNotifBusy(false);
+      if (permission !== "granted") {
+        setNotifMsg("Waa in aad ogolaatid ogolaanshaha browser-ka (notifications) si tan loo shido.");
+        return;
+      }
+    }
+    const next = !notifEnabled;
+    setNotifEnabled(next);
+    await setDoc(doc(db, "sosariAdmin", "admin"), { notificationsEnabled: next }, { merge: true });
+    setNotifMsg(next ? "Notifications waa la shiday." : "Notifications waa la damiyay.");
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -165,6 +197,25 @@ export default function AdminSettings() {
           {saving ? "Keydinaya…" : "Keydi isbeddelka"}
         </button>
       </form>
+
+      <div className="adminSettingsDivider" style={{ margin: "32px 0" }} />
+
+      <h2 style={{ fontSize: 16, marginBottom: 4 }}>Notifications</h2>
+      <p className="lead" style={{ marginBottom: 14 }}>
+        Marka la shido, waxaad heli doontaa ogeysiis (browser notification) isla markiiba mar
+        kasta oo qof foomka "Work With SOSARI" buuxiyo — ilaa inta aad browser-kaaga ku haysato
+        tab ka mid ah website-ka, xitaa haddii aadan ku sugnayn bogga Partner Messages.
+      </p>
+      <button
+        type="button"
+        className={`notifToggle ${notifEnabled ? "notifToggleOn" : ""}`}
+        onClick={toggleNotifications}
+        disabled={notifBusy}
+      >
+        <span className="notifToggleDot" />
+        {notifEnabled ? "Notifications: ON" : "Notifications: OFF"}
+      </button>
+      {notifMsg && <p className="adminSettingsMsg adminSettingsMsgOk" style={{ marginTop: 10 }}>{notifMsg}</p>}
     </div>
   );
 }

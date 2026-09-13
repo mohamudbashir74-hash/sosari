@@ -4,6 +4,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { fetchFeaturedHome } from "../utils/content";
 import ContentCard from "../components/ContentCard";
+import PartnersCarousel from "../components/PartnersCarousel";
 import Loader from "../components/Loader";
 import Reveal, { RevealGroup, RevealItem } from "../components/Reveal";
 import { TiltCard } from "../components/Motion";
@@ -65,35 +66,34 @@ export default function Home() {
       <header className="hero heroV2">
         <div className="heroV2-in">
           <div className="heroV2-left">
-            <div className="pillBadge"><IconChart /> {hero.eyebrow}</div>
-            <h1>
+            <Reveal as="h1">
               {lead}
               {accent && <span className="accent">{accent}</span>}
-            </h1>
-            <p>{hero.text}</p>
-            <div className="actions">
-              <Link className="btn primary" to="/section/research"><IconSearch /> Explore Research</Link>
-              <Link className="btn outline" to="/section/data"><IconChart /> Explore Data</Link>
-              <Link className="btn outline" to="/partner"><IconUsers /> Work With SOSARI</Link>
-            </div>
+            </Reveal>
+            <Reveal as="p" delay={0.08}>{hero.text}</Reveal>
+            <RevealGroup className="actions" stagger={0.06}>
+              <RevealItem><Link className="btn primary" to="/section/research"><IconSearch /> Explore Research</Link></RevealItem>
+              <RevealItem><Link className="btn outline" to="/section/data"><IconChart /> Explore Data</Link></RevealItem>
+              <RevealItem><Link className="btn outline" to="/partner"><IconUsers /> Work With SOSARI</Link></RevealItem>
+            </RevealGroup>
 
-            <div className="heroStatsInline">
-              <div className="heroStatItem">
+            <RevealGroup className="heroStatsInline" stagger={0.07}>
+              <RevealItem className="heroStatItem">
                 <span className="heroStatIcon"><IconDoc /></span>
                 <div><b>100+</b><span>Research Projects</span></div>
-              </div>
-              <div className="heroStatItem">
+              </RevealItem>
+              <RevealItem className="heroStatItem">
                 <span className="heroStatIcon"><IconUsers /></span>
                 <div><b>50+</b><span>Partners & Collaborators</span></div>
-              </div>
-              <div className="heroStatItem">
+              </RevealItem>
+              <RevealItem className="heroStatItem">
                 <span className="heroStatIcon"><IconChart /></span>
                 <div><b>10+</b><span>Years of Impact</span></div>
-              </div>
-            </div>
+              </RevealItem>
+            </RevealGroup>
           </div>
 
-          <div className="heroV2-right">
+          <Reveal as="div" className="heroV2-right" delay={0.15} y={20}>
             <div className="dotGrid" aria-hidden="true" />
 
             <svg viewBox="0 0 300 420" className="somaliaGlow" aria-hidden="true">
@@ -121,36 +121,41 @@ export default function Home() {
                 <Link to="/section/data" className="heroPhotoArrow" aria-label="Explore data">→</Link>
               </div>
             </div>
-
-            <div className="floatStack">
-              <Link to="/section/data" className="floatCard2 fc-blue">
-                <span className="fc-icon"><IconChart /></span>
-                <span className="fc-text"><b>Data Today</b>A Stronger Tomorrow</span>
-                <span className="fc-arrow">→</span>
-              </Link>
-              <Link to="/section/research" className="floatCard2 fc-green">
-                <span className="fc-icon"><IconDoc /></span>
-                <span className="fc-text"><b>Research Insights</b>Evidence for policy and development</span>
-                <span className="fc-arrow">→</span>
-              </Link>
-              <Link to="/section/data" className="floatCard2 fc-cyan">
-                <span className="fc-icon"><IconBulb /></span>
-                <span className="fc-text"><b>Reliable Statistics</b>Trusted data, better decisions</span>
-                <span className="fc-arrow">→</span>
-              </Link>
-              <Link to="/section/policies" className="floatCard2 fc-purple">
-                <span className="fc-icon"><IconUsers /></span>
-                <span className="fc-text"><b>Policy Solutions</b>Research that creates real change</span>
-                <span className="fc-arrow">→</span>
-              </Link>
-              <Link to="/section/evaluations" className="floatCard2 fc-gold">
-                <span className="fc-icon"><IconGlobe /></span>
-                <span className="fc-text"><b>Real Impact</b>For people, communities and a stronger Somalia</span>
-                <span className="fc-arrow">→</span>
-              </Link>
-            </div>
-          </div>
+          </Reveal>
         </div>
+
+        <RevealGroup className="floatRow" stagger={0.08}>
+          <RevealItem className="floatCardWrap">
+            <Link to="/section/data" className="floatCard2 fc-blue">
+              <span className="fc-icon"><IconChart /></span>
+              <span className="fc-text"><b>Data Today</b>A Stronger Tomorrow</span>
+            </Link>
+          </RevealItem>
+          <RevealItem className="floatCardWrap">
+            <Link to="/section/research" className="floatCard2 fc-green">
+              <span className="fc-icon"><IconDoc /></span>
+              <span className="fc-text"><b>Research Insights</b>Evidence for policy and development</span>
+            </Link>
+          </RevealItem>
+          <RevealItem className="floatCardWrap">
+            <Link to="/section/data" className="floatCard2 fc-cyan">
+              <span className="fc-icon"><IconBulb /></span>
+              <span className="fc-text"><b>Reliable Statistics</b>Trusted data, better decisions</span>
+            </Link>
+          </RevealItem>
+          <RevealItem className="floatCardWrap">
+            <Link to="/section/policies" className="floatCard2 fc-purple">
+              <span className="fc-icon"><IconUsers /></span>
+              <span className="fc-text"><b>Policy Solutions</b>Research that creates real change</span>
+            </Link>
+          </RevealItem>
+          <RevealItem className="floatCardWrap">
+            <Link to="/section/evaluations" className="floatCard2 fc-gold">
+              <span className="fc-icon"><IconGlobe /></span>
+              <span className="fc-text"><b>Real Impact</b>For people, communities and a stronger Somalia</span>
+            </Link>
+          </RevealItem>
+        </RevealGroup>
       </header>
 
       <Reveal as="div" className="strip stripCenter">
@@ -273,6 +278,8 @@ export default function Home() {
           </Reveal>
         </div>
       </section>
+
+      <PartnersCarousel />
     </>
   );
 }

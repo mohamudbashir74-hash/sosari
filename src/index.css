@@ -1,5 +1,5 @@
 :root{--ink:#102536;--navy:#071f34;--navy2:#0b304c;--blue:#086ead;--teal:#07867d;--gold:#cfa448;--muted:#617483;--paper:#f5f8fa;--line:#dce5eb;--white:#fff;--max:1240px}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);font-family:Inter,"Segoe UI",Arial,sans-serif;line-height:1.55;background:#fff}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);font-family:Inter,"Segoe UI",Arial,sans-serif;line-height:1.55;background:#fff;font-weight:500}
 a{text-decoration:none;color:inherit}
 img{max-width:100%}
 button{font-family:inherit;cursor:pointer}
@@ -32,7 +32,7 @@ button{font-family:inherit;cursor:pointer}
 .brand:hover{transform:scale(1.02)}
 .official-logo{display:block;width:255px;height:auto;max-height:68px;object-fit:contain;transition:max-height .25s ease}
 .navScrolled .official-logo{max-height:56px}
-.footer-logo{width:245px}
+.footer-logo{width:190px}
 .footerLogoBadge{display:inline-block;background:#fff;padding:14px 20px;border-radius:14px;box-shadow:0 10px 26px rgba(0,0,0,.25)}
 .menu{display:flex;align-items:center}
 .mi{position:relative}
@@ -141,8 +141,8 @@ button{font-family:inherit;cursor:pointer}
 .pillBadge svg{width:14px;height:14px}
 .heroV2 h1{font-size:52px;line-height:1.08;letter-spacing:-1.6px;max-width:600px;margin:18px 0 18px;color:#fff}
 .heroV2 h1 .accent{color:#3fd9c7}
-.heroV2 p{max-width:560px;color:#d6e6ef;font-size:16px}
-.heroV2-right{position:relative;min-height:480px}
+.heroV2 p{max-width:560px;color:#d6e6ef;font-size:16px;font-weight:600}
+.heroV2-right{position:relative;min-height:460px}
 .dotGrid{position:absolute;inset:-20px -20px auto auto;width:340px;height:340px;border-radius:50%;background-image:radial-gradient(rgba(255,255,255,.16) 1px,transparent 1.5px);background-size:14px 14px;opacity:.5;pointer-events:none}
 
 .heroStatsInline{display:flex;gap:26px;margin-top:32px;flex-wrap:wrap}
@@ -154,7 +154,7 @@ button{font-family:inherit;cursor:pointer}
 
 .somaliaGlow{position:absolute;left:-10px;top:6px;width:190px;height:auto;z-index:1;filter:drop-shadow(0 0 18px rgba(127,224,214,.45))}
 
-.heroPhotoFrame{position:relative;z-index:2;width:300px;height:440px;margin:6px 0 0 72px;border-radius:20px;overflow:hidden;
+.heroPhotoFrame{position:relative;z-index:2;width:100%;height:460px;margin:0;border-radius:20px;overflow:hidden;
   box-shadow:0 25px 55px rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.18)}
 .heroPhotoImg{width:100%;height:100%;display:block;object-fit:cover}
 .heroPhotoScrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,20,32,0) 45%,rgba(4,14,22,.85) 100%)}
@@ -163,21 +163,21 @@ button{font-family:inherit;cursor:pointer}
 .heroPhotoArrow{flex:none;width:32px;height:32px;border-radius:50%;background:#fff;color:var(--navy);display:flex;align-items:center;justify-content:center;font-weight:900;transition:transform .2s ease}
 .heroPhotoArrow:hover{transform:translateX(3px)}
 
-.floatStack{position:absolute;top:6px;right:0;width:240px;display:flex;flex-direction:column;gap:11px;z-index:3}
-.floatCard2{display:flex;align-items:center;gap:11px;border-radius:14px;padding:11px 13px;box-shadow:0 14px 28px rgba(0,0,0,.14);
-  transition:transform .22s ease,box-shadow .22s ease}
+.floatRow{max-width:var(--max);margin:22px auto 0;padding:0 4.8vw 46px;display:flex;gap:12px;position:relative;z-index:3}
+.floatCardWrap{flex:1;display:flex;min-width:0}
+.floatCard2{flex:1;display:flex;align-items:center;gap:10px;border-radius:14px;padding:13px 14px;box-shadow:0 14px 28px rgba(0,0,0,.14);
+  transition:transform .22s ease,box-shadow .22s ease;min-width:0;width:100%}
 .floatCard2:hover{transform:translateY(-3px);box-shadow:0 20px 36px rgba(0,0,0,.18)}
 .fc-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;color:#fff}
 .fc-icon svg{width:17px;height:17px}
 .fc-text{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}
 .fc-text b{font-size:12px;color:var(--ink);font-weight:800}
-.fc-text{font-size:10px;color:var(--muted);line-height:1.3}
-.fc-arrow{width:25px;height:25px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex:none;font-weight:900;box-shadow:0 4px 10px rgba(0,0,0,.12)}
-.fc-blue{background:#eaf3ff}.fc-blue .fc-icon{background:#2f6fed}.fc-blue .fc-arrow{color:#2f6fed}
-.fc-green{background:#e9f9f0}.fc-green .fc-icon{background:#1fa35c}.fc-green .fc-arrow{color:#1fa35c}
-.fc-cyan{background:#e8fbfa}.fc-cyan .fc-icon{background:#17b3c9}.fc-cyan .fc-arrow{color:#17b3c9}
-.fc-purple{background:#f3ecfc}.fc-purple .fc-icon{background:#8b5cf6}.fc-purple .fc-arrow{color:#8b5cf6}
-.fc-gold{background:#fdf3e2}.fc-gold .fc-icon{background:#e0a02c}.fc-gold .fc-arrow{color:#e0a02c}
+.fc-text{font-size:10px;font-weight:600;color:var(--muted);line-height:1.3}
+.fc-blue{background:#eaf3ff}.fc-blue .fc-icon{background:#2f6fed}
+.fc-green{background:#e9f9f0}.fc-green .fc-icon{background:#1fa35c}
+.fc-cyan{background:#e8fbfa}.fc-cyan .fc-icon{background:#17b3c9}
+.fc-purple{background:#f3ecfc}.fc-purple .fc-icon{background:#8b5cf6}
+.fc-gold{background:#fdf3e2}.fc-gold .fc-icon{background:#e0a02c}
 
 .stripCenter{display:flex;align-items:center;justify-content:center;gap:22px}
 .stripLine{flex:0 0 70px;height:1px;background:var(--line)}
@@ -199,12 +199,15 @@ button{font-family:inherit;cursor:pointer}
   .heroV2-right{position:static;min-height:0;display:flex;flex-direction:column;gap:14px;margin-top:28px}
   .dotGrid,.somaliaGlow{display:none}
   .heroPhotoFrame{position:relative;width:100%;height:300px;margin:0}
-  .floatStack{position:static;width:100%;gap:10px}
+  .floatRow{flex-wrap:wrap}
+  .floatCardWrap{flex:1 1 45%}
 }
 @media(max-width:650px){
   .heroV2 h1{font-size:34px}
   .heroPhotoFrame{height:220px}
   .heroStatsInline{gap:16px}
+  .floatRow{flex-direction:column}
+  .floatCardWrap{flex:1 1 auto}
 }
 
 .strip{border-bottom:1px solid var(--line);padding:16px 4.8vw}
@@ -214,13 +217,13 @@ section{padding:78px 4.8vw}
 .wrap{max-width:var(--max);margin:auto}
 .eyebrow2{font-size:9px;color:var(--teal);font-weight:900;letter-spacing:1.7px;text-transform:uppercase}
 h2{font-size:38px;line-height:1.1;letter-spacing:-.8px;margin:7px 0 12px}
-.lead{font-size:14px;color:var(--muted);max-width:800px}
+.lead{font-size:14px;font-weight:600;color:var(--muted);max-width:800px}
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:30px}
 .card{border:1px solid var(--line);border-radius:13px;padding:22px;background:#fff;transition:.18s;display:block}
 .card:hover{transform:translateY(-3px);box-shadow:0 18px 38px rgba(7,31,52,.06)}
 .num{font-size:8px;letter-spacing:1.3px;font-weight:900;color:var(--blue)}
 .card h3{font-size:17px;margin:8px 0 6px}
-.card p{font-size:11.5px;color:var(--muted);margin:0}
+.card p{font-size:11.5px;font-weight:600;color:var(--muted);margin:0}
 .link{display:inline-block;color:var(--blue);font-size:10px;font-weight:900;margin-top:14px;background:none;border:none;padding:0;cursor:pointer}
 
 .dark{background:var(--navy);color:#fff}
@@ -229,7 +232,7 @@ h2{font-size:38px;line-height:1.1;letter-spacing:-.8px;margin:7px 0 12px}
 .themes{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-top:30px}
 .theme{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);border-radius:12px;padding:20px}
 .theme b{font-size:14px}
-.theme p{color:#a9bfcc;font-size:11px;margin:6px 0 0}
+.theme p{color:#a9bfcc;font-size:11px;font-weight:600;margin:6px 0 0}
 
 .split{display:grid;grid-template-columns:1fr 1fr;gap:55px;align-items:center}
 .box{background:var(--paper);border:1px solid var(--line);border-radius:17px;padding:30px}
@@ -323,11 +326,11 @@ h2{font-size:38px;line-height:1.1;letter-spacing:-.8px;margin:7px 0 12px}
 .ctaBand h2{margin:0;max-width:690px;color:#fff}
 .ctaBand p{font-size:11px;color:#bfd2de;max-width:650px}
 
-.footer{background:#061a2b;color:#c7d7e0;padding:55px 4.8vw 20px}
-.foot{max-width:var(--max);margin:auto;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:35px}
+.footer{background:#061a2b;color:#c7d7e0;padding:34px 4.8vw 16px}
+.foot{max-width:var(--max);margin:auto;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:26px}
 .footer h4{font-size:10px;color:#fff;letter-spacing:1px}
-.footer a{display:block;color:#9eb1bf;font-size:10px;padding:4px 0}
-.copy{max-width:var(--max);margin:30px auto 0;border-top:1px solid rgba(255,255,255,.06);padding-top:15px;font-size:9px;color:#7f96a5}
+.footer a{display:block;color:#9eb1bf;font-size:10px;font-weight:600;padding:3px 0}
+.copy{max-width:var(--max);margin:18px auto 0;border-top:1px solid rgba(255,255,255,.06);padding-top:12px;font-size:9px;font-weight:600;color:#7f96a5}
 
 .pageHero{background:linear-gradient(118deg,#061d30,#0a4163 58%,#087b75);color:#fff;padding:70px 4.8vw}
 .pageHero h1{font-size:40px;margin:10px 0 8px;letter-spacing:-1px}
@@ -535,3 +538,18 @@ h2{font-size:38px;line-height:1.1;letter-spacing:-.8px;margin:7px 0 12px}
   .adminWelcomeArt{display:none}
 }
 .sectionSingleArticle h2{margin:6px 0 10px;font-size:24px;color:var(--navy)}
+/* ---------- Our Partners carousel (Home page) ---------- */
+.partnersSection{background:var(--white);padding:56px 0;border-top:4px solid var(--navy);border-bottom:1px solid var(--line);overflow:hidden}
+.partnersTitle{text-align:center;font-size:32px;font-weight:800;color:#111;margin:0 0 40px}
+.partnersGrid{max-width:900px;margin:0 auto}
+.partnersGridInner{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.partnerCard{display:flex;align-items:center;justify-content:center;min-height:140px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:20px;cursor:pointer;font:inherit;transition:box-shadow .2s ease,transform .2s ease}
+.partnerCard:hover{box-shadow:0 8px 20px rgba(0,0,0,.08);transform:translateY(-2px)}
+.partnerLogo{max-width:100%;max-height:88px;object-fit:contain;pointer-events:none}
+.partnersDots{display:flex;justify-content:center;gap:8px;margin-top:28px}
+.partnersDot{width:8px;height:8px;border-radius:50%;border:none;background:#d5d5d5;cursor:pointer;padding:0;transition:background .2s ease,transform .2s ease}
+.partnersDot.active{background:#111;transform:scale(1.2)}
+@media(max-width:720px){
+  .partnersGridInner{grid-template-columns:1fr;max-width:320px;margin:0 auto}
+  .partnersTitle{font-size:24px}
+}

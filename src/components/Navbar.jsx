@@ -52,27 +52,6 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="top">
-        <div className="topLeft">
-          <span className="topPin"><IconPin /> Somalia</span>
-          <span className="topSep">|</span>
-          <span>Independent • Data Driven • For a Better Tomorrow</span>
-        </div>
-        <div className="topRight">
-          <a href="mailto:info@sosari.com" className="topMail"><IconMail /> info@sosari.com</a>
-          <span className="topSocial">
-            <a href="#" aria-label="Facebook"><IconFacebook /></a>
-            <a href="#" aria-label="X (Twitter)"><IconX /></a>
-            <a href="#" aria-label="LinkedIn"><IconLinkedIn /></a>
-            <a href="#" aria-label="YouTube"><IconYoutube /></a>
-            <a href="#" aria-label="Telegram"><IconTelegram /></a>
-          </span>
-          <button type="button" className="langBtn">
-            <IconGlobe /> EN <IconChevronRight className="langArrow" />
-          </button>
-        </div>
-      </div>
-
       <nav className={`nav${scrolled ? " navScrolled" : ""}`}>
         <span className="navAccentBar" aria-hidden="true" />
         <Link className="brand" to="/">

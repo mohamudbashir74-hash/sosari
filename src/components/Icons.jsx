@@ -233,3 +233,146 @@ export function IconDownload(props) {
     </svg>
   );
 }
+
+export function IconHeart(props) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M12 21s-7-4.35-9.5-8.8C.9 8.6 2.2 5 5.6 4.3 8 3.8 10 5 12 7.5 14 5 16 3.8 18.4 4.3 21.8 5 23.1 8.6 21.5 12.2 19 16.65 12 21 12 21Z" />
+    </svg>
+  );
+}
+
+export function IconFork(props) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M6 2v8a2 2 0 0 0 4 0V2" />
+      <path d="M8 10v12" />
+      <path d="M17 2c-1.5 1-2 3-2 5 0 2.2 1.3 3.5 2 4v11" />
+    </svg>
+  );
+}
+
+export function IconGradCap(props) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M2 8 12 3l10 5-10 5-10-5Z" />
+      <path d="M6 10.5V16c0 1.4 2.7 3 6 3s6-1.6 6-3v-5.5" />
+      <path d="M22 8v6" />
+    </svg>
+  );
+}
+
+export function IconDroplet(props) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M12 2.5s7 8 7 13a7 7 0 0 1-14 0c0-5 7-13 7-13Z" />
+    </svg>
+  );
+}
+
+export function IconLeaf(props) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M20 4C10 4 4 10 4 18v2h2c8 0 14-6 14-16Z" />
+      <path d="M6 20c4-4 8-8 14-14" />
+    </svg>
+  );
+}
+
+export function IconTree(props) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M12 2 6 11h3l-4 6h5v5h4v-5h5l-4-6h3Z" />
+    </svg>
+  );
+}
+
+export function IconSprout(props) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M12 21V11" />
+      <path d="M12 11c0-4-3-6-7-6 0 4 3 7 7 7Z" />
+      <path d="M12 8c0-3 2.5-5 6-5 0 3.5-2.5 6-6 6Z" />
+    </svg>
+  );
+}
+
+export function IconMountain(props) {
+  return (
+    <svg {...base} {...props}>
+      <path d="m3 20 6-11 4 6 2-3 6 8Z" />
+      <circle cx="17.5" cy="6.5" r="1.5" />
+    </svg>
+  );
+}
+
+export function IconScale(props) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M12 3v18" />
+      <path d="M5 8h14" />
+      <path d="m5 8-3 6a3.5 3.5 0 0 0 6 0Z" />
+      <path d="m19 8-3 6a3.5 3.5 0 0 0 6 0Z" />
+      <path d="M8 21h8" />
+    </svg>
+  );
+}
+
+export function IconHouse(props) {
+  return (
+    <svg {...base} {...props}>
+      <path d="m3 11 9-7 9 7" />
+      <path d="M5 10v10h14V10" />
+      <path d="M10 20v-6h4v6" />
+    </svg>
+  );
+}
+
+export function IconShuffle(props) {
+  return (
+    <svg {...base} {...props}>
+      <path d="m16 3 5 4-5 4" />
+      <path d="M4 7h6c1.5 0 2 .5 3 2l4 6c1 1.5 1.5 2 3 2h1" />
+      <path d="m16 21 5-4-5-4" />
+      <path d="M4 17h6c1.5 0 2-.5 3-2" />
+    </svg>
+  );
+}
+
+export function IconBird(props) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M22 5c-1 1-2 1.3-3.4 1.3C17.6 3.6 15.3 2 12.5 2c-3 0-5 2-5 4.5 0 .5.06 1 .2 1.4C4 8.3 2 10.5 2 13c1 0 2-.3 2.7-1-0.2 3 1.5 7 6.8 8-1-1-1.5-2-1.8-3.2 1.3 1 3 1.4 4.6 1 2.6-.7 4.2-3 4.5-5.4.06-.4.1-.9.1-1.4 1.3-.6 2.5-1.7 3.1-3Z" />
+    </svg>
+  );
+}
+
+export function IconBriefcase(props) {
+  return (
+    <svg {...base} {...props}>
+      <rect x="2" y="7" width="20" height="14" rx="2" />
+      <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+      <path d="M2 13h20" />
+    </svg>
+  );
+}
+
+export function IconGear(props) {
+  return (
+    <svg {...base} {...props}>
+      <circle cx="12" cy="12" r="3.2" />
+      <path d="M19.4 13.5a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.9 2.9l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5v.2a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.9-2.9l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H4a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.9-2.9l.1.1a1.7 1.7 0 0 0 1.9.3H10a1.7 1.7 0 0 0 1-1.5V4a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.9 2.9l-.1.1a1.7 1.7 0 0 0-.3 1.9V10a1.7 1.7 0 0 0 1.5 1H20a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z" />
+    </svg>
+  );
+}
+
+export function IconCoins(props) {
+  return (
+    <svg {...base} {...props}>
+      <ellipse cx="9" cy="7" rx="6" ry="3.2" />
+      <path d="M3 7v5c0 1.8 2.7 3.2 6 3.2s6-1.4 6-3.2V7" />
+      <path d="M3 12v5c0 1.8 2.7 3.2 6 3.2s6-1.4 6-3.2v-5" />
+      <ellipse cx="17" cy="10.5" rx="4.3" ry="2.2" />
+    </svg>
+  );
+}

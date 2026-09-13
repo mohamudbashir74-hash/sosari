@@ -8,9 +8,10 @@ import Loader from "../components/Loader";
 import Reveal, { RevealGroup, RevealItem } from "../components/Reveal";
 import { TextReveal, TiltCard, BlobBg } from "../components/Motion";
 import AboutOverview from "../components/AboutOverview";
+import { RESEARCH_GROUP_META, RESEARCH_CHIP_ICONS } from "../config/researchThemesMeta";
 import {
   IconHome, IconChevronRight, IconInstitution, IconFlask, IconDb,
-  IconBulb, IconChart, IconDoc, IconChat, IconArrow,
+  IconBulb, IconChart, IconDoc, IconChat, IconArrow, IconSearch,
 } from "../components/Icons";
 import NotFound from "./NotFound";
 
@@ -32,6 +33,7 @@ export default function SectionLanding() {
 
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [themeQuery, setThemeQuery] = useState("");
 
   useEffect(() => {
     if (!group) return;
@@ -81,43 +83,91 @@ export default function SectionLanding() {
 
       <section>
         <div className="wrap">
-          <Reveal className="eyebrow2">Explore</Reveal>
-          <Reveal as="h2" delay={0.05}>
-            {group.groups ? `Themes under ${group.label}` : `Sub-sections under ${group.label}`}
-          </Reveal>
-
           {group.groups ? (
-            <div className="groupBlocks">
-              {group.groups.map((g, gi) => (
-                <div key={g.subcap} className="groupBlock">
-                  <Reveal as="h3" delay={gi * 0.04} className="groupBlockTitle">{g.subcap}</Reveal>
-                  <RevealGroup className="chipGrid" stagger={0.05}>
-                    {g.items.map((it) => (
-                      <RevealItem key={it.key}>
-                        <Link to={`/section/${it.key}`} className="chip">
-                          {it.label}
-                          <IconArrow className="chipArrow" />
-                        </Link>
-                      </RevealItem>
-                    ))}
-                  </RevealGroup>
+            <>
+              <div className="researchThemesHeader">
+                <div>
+                  <Reveal className="eyebrow2">Explore</Reveal>
+                  <Reveal as="h2" delay={0.05}>
+                    Themes under <span className="accentText">{group.label}</span>
+                  </Reveal>
+                  <Reveal as="p" delay={0.1} className="lead">
+                    Discover our key themes and explore the areas where we work to create
+                    solutions for a better and more sustainable future.
+                  </Reveal>
                 </div>
-              ))}
-            </div>
+                <Reveal delay={0.14} className="researchThemesArt">
+                  <div className="researchSearchBar">
+                    <IconSearch />
+                    <input
+                      type="text"
+                      placeholder="Search themes, topics…"
+                      value={themeQuery}
+                      onChange={(e) => setThemeQuery(e.target.value)}
+                    />
+                  </div>
+                  <div className="researchArtCursive">Knowledge today<br />A brighter tomorrow</div>
+                </Reveal>
+              </div>
+
+              <div className="groupBlocks">
+                {group.groups.map((g, gi) => {
+                  const gm = RESEARCH_GROUP_META[g.subcap] || {};
+                  const GroupIcon = gm.icon || IconDoc;
+                  const q = themeQuery.trim().toLowerCase();
+                  const visibleItems = q ? g.items.filter((it) => it.label.toLowerCase().includes(q)) : g.items;
+                  if (q && visibleItems.length === 0) return null;
+                  return (
+                    <div key={g.subcap} className="groupBlock">
+                      <div className="groupBlockHead">
+                        <span className="groupBlockIcon" style={{ "--gc": gm.color || "var(--blue)" }}>
+                          <GroupIcon />
+                        </span>
+                        <div className="groupBlockHeadText">
+                          <Reveal as="h3" delay={gi * 0.04} className="groupBlockTitle">{g.subcap}</Reveal>
+                          {gm.subtitle && <span className="groupBlockSubtitle">{gm.subtitle}</span>}
+                        </div>
+                        <Link to={`/section/${g.items[0].key}`} className="groupBlockViewAll" style={{ "--gc": gm.color || "var(--blue)" }}>
+                          View all <IconArrow />
+                        </Link>
+                      </div>
+                      <RevealGroup className="chipGrid" stagger={0.05}>
+                        {visibleItems.map((it) => {
+                          const ChipIcon = RESEARCH_CHIP_ICONS[it.label] || IconDoc;
+                          return (
+                            <RevealItem key={it.key}>
+                              <Link to={`/section/${it.key}`} className="chip" style={{ "--gc": gm.color || "var(--blue)" }}>
+                                <span className="chipIcon"><ChipIcon /></span>
+                                {it.label}
+                                <IconChevronRight className="chipArrow" />
+                              </Link>
+                            </RevealItem>
+                          );
+                        })}
+                      </RevealGroup>
+                    </div>
+                  );
+                })}
+              </div>
+            </>
           ) : (
-            <RevealGroup className="cards" stagger={0.06}>
-              {flatItems.map((it, i) => (
-                <RevealItem key={it.key}>
-                  <TiltCard>
-                    <Link className="card sectionSubCard" to={`/section/${it.key}`}>
-                      <div className="num">{String(i + 1).padStart(2, "0")}</div>
-                      <h3>{it.label}</h3>
-                      <span className="link">Explore →</span>
-                    </Link>
-                  </TiltCard>
-                </RevealItem>
-              ))}
-            </RevealGroup>
+            <>
+              <Reveal className="eyebrow2">Explore</Reveal>
+              <Reveal as="h2" delay={0.05}>Sub-sections under {group.label}</Reveal>
+              <RevealGroup className="cards" stagger={0.06}>
+                {flatItems.map((it, i) => (
+                  <RevealItem key={it.key}>
+                    <TiltCard>
+                      <Link className="card sectionSubCard" to={`/section/${it.key}`}>
+                        <div className="num">{String(i + 1).padStart(2, "0")}</div>
+                        <h3>{it.label}</h3>
+                        <span className="link">Explore →</span>
+                      </Link>
+                    </TiltCard>
+                  </RevealItem>
+                ))}
+              </RevealGroup>
+            </>
           )}
         </div>
       </section>

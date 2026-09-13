@@ -21,6 +21,7 @@ export const NAV = [
       { label: "Governance & Independence", key: "about/governance-independence" },
       { label: "Leadership", key: "about/leadership" },
       { label: "Our Team", key: "about/our-team" },
+      { label: "Annual Report", key: "knowledge/annual-report" },
     ],
   },
   {
@@ -129,12 +130,8 @@ export const NAV = [
       { label: "Research Reports", key: "knowledge/research-reports" },
       { label: "Research Papers", key: "knowledge/research-papers" },
       { label: "Policy Briefs", key: "knowledge/policy-briefs" },
-      { label: "Working Papers", key: "knowledge/working-papers" },
-      { label: "Technical & Statistical Reports", key: "knowledge/technical-statistical-reports" },
-      { label: "Evaluation Reports", key: "knowledge/evaluation-reports" },
       { label: "Case Studies", key: "knowledge/case-studies" },
       { label: "Insights & Analysis", key: "knowledge/insights-analysis" },
-      { label: "Annual Report", key: "knowledge/annual-report" },
     ],
   },
   {

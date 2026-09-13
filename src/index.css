@@ -341,6 +341,10 @@ h2{font-size:38px;line-height:1.1;letter-spacing:-.8px;margin:7px 0 12px}
 .partnerForm{display:flex;flex-direction:column;gap:16px}
 .partnerForm label{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:700;color:var(--ink)}
 .partnerForm input,.partnerForm textarea{border:1px solid var(--line);border-radius:8px;padding:11px 13px;font-size:13px;font-family:inherit}
+.partnerForm .req{color:#c0392b}
+.partnerForm .optional{color:var(--muted);font-weight:400;font-size:11px;text-transform:none;letter-spacing:0}
+.partnerForm input[type="file"]{border:1px dashed var(--line);background:var(--paper);padding:14px 13px;cursor:pointer}
+.partnerForm .fileChosen{display:block;margin-top:6px;font-size:11px;color:var(--blue);font-weight:700}
 .partnerForm textarea{resize:vertical}
 
 @media(max-width:1050px){
@@ -522,3 +526,4 @@ h2{font-size:38px;line-height:1.1;letter-spacing:-.8px;margin:7px 0 12px}
   .adminWelcome{flex-direction:column;align-items:flex-start}
   .adminWelcomeArt{display:none}
 }
+.sectionSingleArticle h2{margin:6px 0 10px;font-size:24px;color:var(--navy)}

@@ -6,7 +6,7 @@ import { fetchSectionContent } from "../utils/content";
 import ContentCard from "../components/ContentCard";
 import Loader from "../components/Loader";
 import Reveal, { RevealGroup, RevealItem } from "../components/Reveal";
-import { TextReveal, TiltCard, BlobBg } from "../components/Motion";
+import { TextReveal, TiltCard, BlobBg, ImageReveal } from "../components/Motion";
 import {
   IconHome, IconChevronRight, IconInstitution, IconFlask, IconDb,
   IconBulb, IconChart, IconDoc, IconChat,
@@ -87,6 +87,26 @@ export default function SectionPage() {
             <Reveal as="p" className="lead">
               No published content here yet. Once the SOSARI team publishes content for
               "{meta.label}" from the admin panel, it will automatically appear on this page.
+            </Reveal>
+          ) : items.length === 1 ? (
+            // A single published item: show it as the full read, right here —
+            // not a card that needs another click to "Read more".
+            <Reveal as="div" className="sectionSingleArticle articleBody">
+              {items[0].imageUrl && (
+                <ImageReveal src={items[0].imageUrl} alt={items[0].title} className="articleImgWrap" />
+              )}
+              {items[0].title && items[0].title !== meta.label && <h2>{items[0].title}</h2>}
+              {items[0].author && (
+                <p className="lead">
+                  <b>{items[0].author}</b>{items[0].date ? ` — ${items[0].date}` : ""}
+                </p>
+              )}
+              {items[0].summary && <p className="lead">{items[0].summary}</p>}
+              <div className="articleText">
+                {(items[0].body || "").split("\n").map((para, i) =>
+                  para.trim() ? <p key={i}>{para}</p> : <br key={i} />
+                )}
+              </div>
             </Reveal>
           ) : (
             <RevealGroup className="pubs" stagger={0.07}>

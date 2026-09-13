@@ -31,7 +31,7 @@ export default function AdminMessages() {
   return (
     <div className="adminPage">
       <h1>Partner Messages</h1>
-      <p className="lead">Fariimaha laga soo diray bogga "Partner With SOSARI".</p>
+      <p className="lead">Fariimaha laga soo diray bogga "Work With SOSARI".</p>
       {loading ? (
         <p>Loading…</p>
       ) : messages.length === 0 ? (
@@ -41,10 +41,15 @@ export default function AdminMessages() {
           {messages.map((m) => (
             <div key={m.id} className={`adminMessageCard ${m.read ? "read" : "unread"}`}>
               <div className="adminMessageHead">
-                <b>{m.name}</b> — <span>{m.email}</span>
+                <b>{m.nameOrg || m.name}</b> — <span>{m.email}</span>
                 {m.organization && <span> · {m.organization}</span>}
               </div>
-              <p>{m.message}</p>
+              <p>{m.inquiry || m.message}</p>
+              {m.fileUrl && (
+                <a className="link" href={m.fileUrl} target="_blank" rel="noreferrer">
+                  📎 {m.fileName || "Attached document"}
+                </a>
+              )}
               <div className="adminRowActions">
                 {!m.read && <button className="link" onClick={() => markRead(m)}>Mark as read</button>}
                 <button className="link adminDeleteBtn" onClick={() => remove(m)}>Delete</button>

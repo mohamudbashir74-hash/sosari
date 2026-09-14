@@ -10,7 +10,7 @@
 // Changing this file changes the navbar AND automatically creates
 // working pages for every item (no other code changes required).
 
-export const NAV = [
+export const DEFAULT_NAV = [
   {
     label: "About",
     key: "about",
@@ -175,9 +175,9 @@ export const FOOTER_NAV = [
 ];
 
 // Flat lookup: sectionKey -> { label, parentLabel, parentKey }
-export function buildSectionIndex() {
+export function buildSectionIndex(nav = DEFAULT_NAV) {
   const idx = {};
-  for (const group of NAV) {
+  for (const group of nav) {
     const parentItems = group.items || (group.groups ? group.groups.flatMap((g) => g.items) : []);
     idx[group.key] = { label: group.label, parentLabel: group.label, parentKey: group.key, isParent: true };
     for (const it of parentItems) {
@@ -187,4 +187,4 @@ export function buildSectionIndex() {
   return idx;
 }
 
-export const SECTION_INDEX = buildSectionIndex();
+export const SECTION_INDEX = buildSectionIndex(DEFAULT_NAV);

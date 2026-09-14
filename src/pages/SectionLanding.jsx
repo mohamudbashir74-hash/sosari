@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { NAV } from "../config/navigation";
+import { useNavigation } from "../contexts/NavigationContext";
 import { SECTION_META, DEFAULT_SECTION_META } from "../config/sectionMeta";
 import { fetchContentForKeys } from "../utils/content";
 import ContentCard from "../components/ContentCard";
@@ -26,6 +26,7 @@ const ICONS = {
 };
 
 export default function SectionLanding() {
+  const { nav: NAV } = useNavigation();
   const { parent } = useParams();
   const group = NAV.find((g) => g.key === parent);
   const meta = SECTION_META[parent] || DEFAULT_SECTION_META;

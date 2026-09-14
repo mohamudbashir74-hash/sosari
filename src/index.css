@@ -614,3 +614,21 @@ h2{font-size:38px;line-height:1.1;letter-spacing:-.8px;margin:7px 0 12px}
 @media(max-width:560px){
   .partnersGridInner{grid-template-columns:1fr 1fr;gap:12px}
 }
+
+.adminNavList{display:flex;flex-direction:column;gap:14px;max-width:820px}
+.adminNavCard{border:1px solid var(--line);border-radius:12px;background:#fff;overflow:hidden}
+.adminNavCardHead{display:flex;align-items:center;gap:10px;padding:12px 14px}
+.adminNavToggle{background:none;border:none;font-size:16px;cursor:pointer;color:var(--muted);width:20px}
+.adminNavLabelInput{flex:1;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-weight:700;font-size:14px;color:var(--ink)}
+.adminNavKey{font-size:11px;color:var(--muted);font-family:monospace;white-space:nowrap}
+.adminNavDelete{font-size:12px;padding:7px 12px!important}
+.adminNavCardBody{padding:6px 14px 16px 44px;display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line)}
+.adminNavItemRow{display:flex;align-items:center;gap:8px}
+.adminNavItemRow input{flex:1;border:1px solid var(--line);border-radius:7px;padding:7px 9px;font-size:13px;color:var(--ink)}
+.adminNavItemRow button{font-size:11px;padding:5px 9px!important}
+.adminNavAddBtn{align-self:flex-start;font-size:12px;padding:7px 12px!important;margin-top:2px}
+.adminNavGroup{border:1px dashed var(--line);border-radius:9px;padding:10px;margin-top:6px;display:flex;flex-direction:column;gap:8px}
+.adminNavGroupHead{display:flex;align-items:center;gap:8px}
+.adminNavGroupHead input{flex:1;border:1px solid var(--line);border-radius:7px;padding:7px 9px;font-weight:700;font-size:13px;color:var(--ink)}
+.adminNavGroupHead button{font-size:11px;padding:5px 9px!important}
+.adminPage .btn.outline{color:var(--ink);border-color:var(--line)}

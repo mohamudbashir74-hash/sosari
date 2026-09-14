@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { SECTION_INDEX, NAV } from "../config/navigation";
+import { useNavigation } from "../contexts/NavigationContext";
 import { SECTION_META, DEFAULT_SECTION_META } from "../config/sectionMeta";
 import { fetchSectionContent } from "../utils/content";
 import ContentCard from "../components/ContentCard";
@@ -24,6 +24,7 @@ const ICONS = {
 };
 
 export default function SectionPage() {
+  const { nav: NAV, sectionIndex: SECTION_INDEX } = useNavigation();
   const { parent, child } = useParams();
   const sectionKey = `${parent}/${child}`;
   const meta = SECTION_INDEX[sectionKey];

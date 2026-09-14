@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AdminAuthProvider } from "./contexts/AdminAuthContext";
+import { NavigationProvider } from "./contexts/NavigationContext";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
@@ -17,6 +18,7 @@ import AdminHomeSettings from "./admin/AdminHomeSettings";
 import AdminMessages from "./admin/AdminMessages";
 import AdminSettings from "./admin/AdminSettings";
 import AdminPartners from "./admin/AdminPartners";
+import AdminNavigation from "./admin/AdminNavigation";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function PublicLayout({ children }) {
@@ -33,6 +35,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <AdminAuthProvider>
+        <NavigationProvider>
         <Routes>
           {/* Admin routes (no public navbar/footer) */}
           <Route path="/admin/login" element={<AdminLogin />} />
@@ -50,6 +53,7 @@ export default function App() {
             <Route index element={<AdminDashboard />} />
             <Route path="home-settings" element={<AdminHomeSettings />} />
             <Route path="partners" element={<AdminPartners />} />
+            <Route path="navigation" element={<AdminNavigation />} />
             <Route path="messages" element={<AdminMessages />} />
             <Route path="settings" element={<AdminSettings />} />
             <Route path="section/:parent/:child" element={<AdminSectionManager />} />
@@ -63,6 +67,7 @@ export default function App() {
           <Route path="/section/:parent/:child" element={<PublicLayout><SectionPage /></PublicLayout>} />
           <Route path="*" element={<PublicLayout><NotFound /></PublicLayout>} />
         </Routes>
+        </NavigationProvider>
       </AdminAuthProvider>
     </BrowserRouter>
   );

@@ -21,6 +21,7 @@ export default function AdminLayout() {
           <NavLink to="/admin" end>Dashboard</NavLink>
           <NavLink to="/admin/home-settings">Home Page Settings</NavLink>
           <NavLink to="/admin/partners">Our Partners</NavLink>
+          <NavLink to="/admin/navigation">Navigation Menu</NavLink>
           <NavLink to="/admin/messages">
             Partner Messages
             {unreadCount > 0 && <span className="adminNavBadge">{unreadCount}</span>}

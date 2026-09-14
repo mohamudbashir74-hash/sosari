@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { collection, getDocs, query, where, orderBy, startAt, endAt } from "firebase/firestore";
 import { db } from "../firebase";
-import { NAV } from "../config/navigation";
+import { useNavigation } from "../contexts/NavigationContext";
 import {
   IconDoc, IconFlask, IconChart, IconUsers, IconArrow, IconGlobe,
 } from "../components/Icons";
@@ -25,6 +25,7 @@ async function countByPrefix(prefix) {
 }
 
 export default function AdminDashboard() {
+  const { nav: NAV } = useNavigation();
   const [counts, setCounts] = useState({ about: null, research: null, data: null, messages: null });
 
   useEffect(() => {

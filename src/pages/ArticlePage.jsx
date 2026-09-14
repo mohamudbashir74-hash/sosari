@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
-import { SECTION_INDEX } from "../config/navigation";
+import { useNavigation } from "../contexts/NavigationContext";
 import { SECTION_META, DEFAULT_SECTION_META } from "../config/sectionMeta";
 import { TextReveal, ImageReveal, BlobBg } from "../components/Motion";
 import Loader from "../components/Loader";
@@ -11,6 +11,7 @@ import { IconHome, IconChevronRight } from "../components/Icons";
 import NotFound from "./NotFound";
 
 export default function ArticlePage() {
+  const { sectionIndex: SECTION_INDEX } = useNavigation();
   const { id } = useParams();
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);

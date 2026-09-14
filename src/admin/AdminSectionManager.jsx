@@ -5,7 +5,7 @@ import {
 } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import { db, storage } from "../firebase";
-import { SECTION_INDEX } from "../config/navigation";
+import { useNavigation } from "../contexts/NavigationContext";
 
 const EMPTY_FORM = {
   title: "", summary: "", body: "", tag: "", author: "", date: "",
@@ -13,6 +13,7 @@ const EMPTY_FORM = {
 };
 
 export default function AdminSectionManager() {
+  const { sectionIndex: SECTION_INDEX } = useNavigation();
   const { parent, child } = useParams();
   const sectionKey = `${parent}/${child}`;
   const meta = SECTION_INDEX[sectionKey];

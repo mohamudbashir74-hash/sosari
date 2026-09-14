@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { NAV } from "../config/navigation";
+import { useNavigation } from "../contexts/NavigationContext";
 import logo from "../assets/logo.png";
 import {
   IconSearch, IconPin, IconMail, IconFacebook, IconX, IconLinkedIn,
@@ -26,6 +26,7 @@ const MOBILE_MENU_STYLE = {
 // accordion. Each destination page (SectionLanding) already lists all of its
 // sub-sections there, so nothing is lost by removing the popup menus.
 export default function Navbar() {
+  const { nav: NAV } = useNavigation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();

@@ -652,3 +652,21 @@ h2{font-size:38px;line-height:1.1;letter-spacing:-.8px;margin:7px 0 12px}
 .adminPanelSubCount{margin-left:auto;font-size:10px;font-weight:700;color:var(--muted);background:var(--paper);
   border-radius:999px;padding:2px 8px}
 .adminPanelSubList{padding-left:19px;margin-bottom:6px}
+
+.btn.whatsappBtn{display:inline-flex;align-items:center;gap:9px;background:#25D366;color:#0b2013;font-weight:800}
+.btn.whatsappBtn:hover{background:#20bd5a}
+
+.whatsappFloat{position:fixed;right:22px;bottom:26px;z-index:60;width:58px;height:58px;border-radius:50%;
+  background:#25D366;color:#fff;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 10px 26px rgba(37,211,102,.45);text-decoration:none}
+.whatsappFloat svg{width:28px;height:28px;position:relative;z-index:2}
+.whatsappFloatPulse{position:absolute;inset:0;border-radius:50%;background:#25D366;opacity:.55;
+  animation:whatsappPulse 2s ease-out infinite}
+@keyframes whatsappPulse{
+  0%{transform:scale(1);opacity:.55}
+  100%{transform:scale(1.9);opacity:0}
+}
+@media(max-width:640px){
+  .whatsappFloat{right:16px;bottom:18px;width:52px;height:52px}
+  .whatsappFloat svg{width:25px;height:25px}
+}

@@ -653,29 +653,32 @@ h2{font-size:38px;line-height:1.1;letter-spacing:-.8px;margin:7px 0 12px}
   border-radius:999px;padding:2px 8px}
 .adminPanelSubList{padding-left:19px;margin-bottom:6px}
 
-.btn.whatsappBtn{display:inline-flex;align-items:center;gap:9px;background:#25D366;color:#0b2013;font-weight:800}
-.btn.whatsappBtn:hover{background:#20bd5a}
+/* Contact nav dropdown (top navbar) */
+.mi>span.navContactTrigger{position:relative;display:block;padding:31px 10px;font-size:14px;font-weight:600;
+  cursor:pointer;color:var(--ink);transition:color .2s ease}
+.mi>span.navContactTrigger::after{content:"";position:absolute;left:10px;right:10px;bottom:26px;height:2px;
+  background:linear-gradient(90deg,var(--blue),var(--teal));transform:scaleX(0);transform-origin:center;
+  transition:transform .28s cubic-bezier(.22,1,.36,1)}
+.mi:hover>span.navContactTrigger,.mi:focus-within>span.navContactTrigger{color:var(--blue)}
+.mi:hover>span.navContactTrigger::after,.mi:focus-within>span.navContactTrigger::after{transform:scaleX(1)}
+.navScrolled .mi>span.navContactTrigger{padding:24px 10px}
+.navScrolled .mi>span.navContactTrigger::after{bottom:19px}
 
-.whatsappFloat{position:fixed;right:22px;bottom:26px;z-index:60;width:58px;height:58px;border-radius:50%;
-  background:#25D366;color:#fff;display:flex;align-items:center;justify-content:center;
-  box-shadow:0 10px 26px rgba(37,211,102,.45);text-decoration:none}
-.whatsappFloat svg{width:28px;height:28px;position:relative;z-index:2}
-.whatsappFloatPulse{position:absolute;inset:0;border-radius:50%;background:#25D366;opacity:.55;
-  animation:whatsappPulse 2s ease-out infinite}
-@keyframes whatsappPulse{
-  0%{transform:scale(1);opacity:.55}
-  100%{transform:scale(1.9);opacity:0}
-}
-@media(max-width:640px){
-  .whatsappFloat{right:16px;bottom:18px;width:52px;height:52px}
-  .whatsappFloat svg{width:25px;height:25px}
-}
+.contactDrop{width:250px;left:auto;right:0;padding:10px}
+.contactDrop .contactDropRow{display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px}
+.contactDropIcon{flex:none;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff}
+.contactDropWhatsapp .contactDropIcon{background:#25D366}
+.contactDropFacebook .contactDropIcon{background:#1877f2}
+.contactDrop .contactDropRow b{display:block;font-size:12.5px;color:var(--ink)}
+.contactDrop .contactDropRow small{display:block;font-size:10px;color:var(--muted)}
+.contactDrop .contactDropRow:hover{background:#f5f8fa}
 
-.linkedinFloat{position:fixed;right:22px;bottom:94px;z-index:60;width:50px;height:50px;border-radius:50%;
-  background:#0a66c2;color:#fff;display:flex;align-items:center;justify-content:center;
-  box-shadow:0 10px 22px rgba(10,102,194,.4);text-decoration:none}
-.linkedinFloat svg{width:22px;height:22px}
-@media(max-width:640px){
-  .linkedinFloat{right:16px;bottom:78px;width:46px;height:46px}
-  .linkedinFloat svg{width:20px;height:20px}
-}
+/* Footer contact icons */
+.footerSocial{display:flex;gap:10px;margin-top:14px}
+.footerSocialBtn{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  color:#fff;transition:transform .18s ease,box-shadow .18s ease}
+.footerSocialBtn svg{width:17px;height:17px}
+.footerSocialBtn:hover{transform:translateY(-3px);box-shadow:0 8px 18px rgba(0,0,0,.25)}
+.footerSocialWhatsapp{background:#25D366}
+.footerSocialFacebook{background:#1877f2}
+.footerSocialLinkedin{background:#0a66c2}

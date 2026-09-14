@@ -1,6 +1,11 @@
 import { Link } from "react-router-dom";
 import { FOOTER_NAV } from "../config/navigation";
 import logo2 from "../assets/logo2.png";
+import { IconWhatsApp, IconFacebook, IconLinkedIn } from "./Icons";
+
+const WHATSAPP_LINK = "https://wa.me/252612880114";
+const FACEBOOK_LINK = "https://www.facebook.com/share/1adtVKQ2KX/";
+const LINKEDIN_LINK = "https://www.linkedin.com/company/somali-statistics-and-research-institute-sosari/";
 
 export default function Footer() {
   return (
@@ -11,6 +16,18 @@ export default function Footer() {
             <img className="official-logo footer-logo" src={logo2} alt="SOSARI — Somali Statistics and Research Institute" />
           </div>
           <p style={{ fontSize: 11, color: "#9bb0bd" }}>Evidence. Data. Policy. Impact.</p>
+
+          <div className="footerSocial">
+            <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="footerSocialBtn footerSocialWhatsapp" aria-label="WhatsApp">
+              <IconWhatsApp />
+            </a>
+            <a href={FACEBOOK_LINK} target="_blank" rel="noopener noreferrer" className="footerSocialBtn footerSocialFacebook" aria-label="Facebook">
+              <IconFacebook />
+            </a>
+            <a href={LINKEDIN_LINK} target="_blank" rel="noopener noreferrer" className="footerSocialBtn footerSocialLinkedin" aria-label="LinkedIn">
+              <IconLinkedIn />
+            </a>
+          </div>
         </div>
 
         {FOOTER_NAV.map((col) => (

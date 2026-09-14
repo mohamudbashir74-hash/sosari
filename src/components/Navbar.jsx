@@ -6,8 +6,12 @@ import {
   IconSearch, IconPin, IconMail, IconFacebook, IconX, IconLinkedIn,
   IconYoutube, IconTelegram, IconGlobe, IconChevronRight, IconHome,
   IconUsers, IconChart, IconDoc, IconCheck, IconBulb, IconChat,
-  IconArrow, IconHandshake,
+  IconArrow, IconHandshake, IconWhatsApp,
 } from "./Icons";
+
+const WHATSAPP_LINK = "https://wa.me/252612880114";
+const FACEBOOK_LINK = "https://www.facebook.com/share/1adtVKQ2KX/";
+const LINKEDIN_LINK = "https://www.linkedin.com/company/somali-statistics-and-research-institute-sosari/";
 
 // Visual identity for each mobile-menu row: a soft tint background, an
 // accent colour for the icon/button, an icon, and a one-line description.
@@ -92,6 +96,26 @@ export default function Navbar() {
             </div>
           ))}
 
+          <div className="mi">
+            <span className="navContactTrigger">Contact</span>
+            <div className="drop contactDrop">
+              <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="contactDropRow contactDropWhatsapp">
+                <span className="contactDropIcon"><IconWhatsApp /></span>
+                <span>
+                  <b>WhatsApp</b>
+                  <small>Chat with us directly</small>
+                </span>
+              </a>
+              <a href={FACEBOOK_LINK} target="_blank" rel="noopener noreferrer" className="contactDropRow contactDropFacebook">
+                <span className="contactDropIcon"><IconFacebook /></span>
+                <span>
+                  <b>Facebook</b>
+                  <small>Follow our page</small>
+                </span>
+              </a>
+            </div>
+          </div>
+
           <button className="searchBtn" aria-label="Search" type="button" title="Search">
             <IconSearch />
           </button>
@@ -154,10 +178,9 @@ export default function Navbar() {
           </Link>
 
           <div className="mobileMenuSocial">
+            <a href="https://wa.me/252612880114" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><IconWhatsApp /></a>
             <a href="https://www.facebook.com/share/1adtVKQ2KX/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><IconFacebook /></a>
-            <a href="#" aria-label="X (Twitter)"><IconX /></a>
-            <a href="#" aria-label="LinkedIn"><IconLinkedIn /></a>
-            <a href="#" aria-label="YouTube"><IconYoutube /></a>
+            <a href="https://www.linkedin.com/company/somali-statistics-and-research-institute-sosari/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><IconLinkedIn /></a>
           </div>
           <p className="mobileMenuFoot">A data-driven Somalia for a better tomorrow</p>
         </div>

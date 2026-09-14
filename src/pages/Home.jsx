@@ -93,20 +93,24 @@ export default function Home() {
           </div>
 
           <Reveal as="div" className="heroV2-right" delay={0.15} y={20}>
-            <div className="heroPhotoFrame">
-              <div
-                className="heroPhotoSlider"
-                style={{
-                  transform: `translateX(-${heroSlide * 100}%)`,
-                  transition: "transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
-                }}
-              >
+            <div className="heroPhotoContainer">
+              <div className="heroPhotoFrame">
                 {HERO_PHOTOS.map((src, i) => (
                   <img
                     key={src}
                     src={src}
                     alt="SOSARI team at work"
-                    className="heroPhotoImg"
+                    className={`heroPhotoImg ${i === heroSlide ? "active" : ""}`}
+                  />
+                ))}
+              </div>
+              {/* Slide Dots / Indicators */}
+              <div className="heroDots">
+                {HERO_PHOTOS.map((_, i) => (
+                  <button
+                    key={i}
+                    className={`heroDot ${i === heroSlide ? "active" : ""}`}
+                    onClick={() => setHeroSlide(i)}
                   />
                 ))}
               </div>

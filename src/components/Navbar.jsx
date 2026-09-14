@@ -9,12 +9,6 @@ import {
   IconArrow, IconHandshake, IconWhatsApp,
 } from "./Icons";
 
-const WHATSAPP_LINK = "https://wa.me/252612880114";
-const FACEBOOK_LINK = "https://www.facebook.com/share/1adtVKQ2KX/";
-const LINKEDIN_LINK = "https://www.linkedin.com/company/somali-statistics-and-research-institute-sosari/";
-
-// Visual identity for each mobile-menu row: a soft tint background, an
-// accent colour for the icon/button, an icon, and a one-line description.
 const MOBILE_MENU_STYLE = {
   about: { bg: "#eef2f8", fg: "#2f6fed", icon: IconUsers, desc: "Learn about SOSARI" },
   research: { bg: "#eafaf1", fg: "#1fa35c", icon: IconSearch, desc: "Explore our research work" },
@@ -25,10 +19,6 @@ const MOBILE_MENU_STYLE = {
   dialogue: { bg: "#fdeaf0", fg: "#e0507a", icon: IconChat, desc: "Engage, discuss and collaborate" },
 };
 
-// Simple, direct navigation: every item — top-level or mobile — is a plain
-// link that goes straight to its own page. No hover dropdown, no tap-to-expand
-// accordion. Each destination page (SectionLanding) already lists all of its
-// sub-sections there, so nothing is lost by removing the popup menus.
 export default function Navbar() {
   const { nav: NAV } = useNavigation();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -45,7 +35,6 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Lock background scroll while the full-screen mobile menu is open.
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
@@ -95,33 +84,6 @@ export default function Navbar() {
               )}
             </div>
           ))}
-
-          <div className="mi">
-            <span className="navContactTrigger">Contact</span>
-            <div className="drop contactDrop">
-              <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="contactDropRow contactDropWhatsapp">
-                <span className="contactDropIcon"><IconWhatsApp /></span>
-                <span>
-                  <b>WhatsApp</b>
-                  <small>Chat with us directly</small>
-                </span>
-              </a>
-              <a href={FACEBOOK_LINK} target="_blank" rel="noopener noreferrer" className="contactDropRow contactDropFacebook">
-                <span className="contactDropIcon"><IconFacebook /></span>
-                <span>
-                  <b>Facebook</b>
-                  <small>Follow our page</small>
-                </span>
-              </a>
-              <a href={LINKEDIN_LINK} target="_blank" rel="noopener noreferrer" className="contactDropRow contactDropLinkedin">
-                <span className="contactDropIcon"><IconLinkedIn /></span>
-                <span>
-                  <b>LinkedIn</b>
-                  <small>Connect with us</small>
-                </span>
-              </a>
-            </div>
-          </div>
 
           <button className="searchBtn" aria-label="Search" type="button" title="Search">
             <IconSearch />

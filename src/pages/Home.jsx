@@ -8,7 +8,7 @@ import PartnersCarousel from "../components/PartnersCarousel";
 import Loader from "../components/Loader";
 import Reveal, { RevealGroup, RevealItem } from "../components/Reveal";
 import { TiltCard } from "../components/Motion";
-import { IconChart, IconUsers, IconDoc, IconBulb, IconDb, IconGlobe, IconSearch, IconWhatsApp } from "../components/Icons";
+import { IconChart, IconUsers, IconDoc, IconBulb, IconDb, IconGlobe, IconSearch, IconWhatsApp, IconLinkedIn } from "../components/Icons";
 import heroPhoto from "../assets/hero-photo.jpg";
 import heroPhoto1 from "../assets/hero-photo1.jpg";
 import heroPhoto2 from "../assets/hero-photo2.jpg";
@@ -16,6 +16,7 @@ import heroPhoto2 from "../assets/hero-photo2.jpg";
 const HERO_PHOTOS = [heroPhoto, heroPhoto1, heroPhoto2];
 const HERO_SLIDE_MS = 4000;
 const WHATSAPP_LINK = "https://wa.me/252612880114";
+const LINKEDIN_LINK = "https://www.linkedin.com/company/somali-statistics-and-research-institute-sosari/";
 
 // Splits "...in Somalia." off the end of the headline so it can be
 // rendered in the accent (teal) color, like the SOSARI brand hero.
@@ -283,6 +284,16 @@ export default function Home() {
       >
         <span className="whatsappFloatPulse" aria-hidden="true" />
         <IconWhatsApp />
+      </a>
+
+      <a
+        className="linkedinFloat"
+        href={LINKEDIN_LINK}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Nagu soo raac LinkedIn"
+      >
+        <IconLinkedIn />
       </a>
     </>
   );

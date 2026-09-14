@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
-  collection, query, orderBy, getDocs, addDoc, deleteDoc, doc, serverTimestamp,
+  collection, query, orderBy, onSnapshot, addDoc, updateDoc, deleteDoc, doc, serverTimestamp,
 } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import { db, storage } from "../firebase";
@@ -12,21 +12,24 @@ export default function AdminPartners() {
   const [previews, setPreviews] = useState([]);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [editingId, setEditingId] = useState(null); // id of the partner whose image is being replaced
+  const editInputRef = useRef(null);
 
-  async function loadItems() {
-    setLoading(true);
-    try {
-      const q = query(collection(db, "partners"), orderBy("order", "asc"));
-      const snap = await getDocs(q);
-      setItems(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
-    } catch (e) {
-      console.error(e);
-    }
-    setLoading(false);
-  }
-
+  // Live listener — add/edit/delete reflect instantly, no manual refresh needed.
   useEffect(() => {
-    loadItems();
+    const q = query(collection(db, "partners"), orderBy("order", "asc"));
+    const unsub = onSnapshot(
+      q,
+      (snap) => {
+        setItems(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+        setLoading(false);
+      },
+      (err) => {
+        console.error(err);
+        setLoading(false);
+      }
+    );
+    return () => unsub();
   }, []);
 
   function onFilesChange(e) {
@@ -61,7 +64,6 @@ export default function AdminPartners() {
       }
       setFiles([]);
       setPreviews([]);
-      await loadItems();
     } catch (err) {
       console.error(err);
       setError("Wax baa qaldamay markii la keydinayay. Isku day mar kale.");
@@ -77,10 +79,43 @@ export default function AdminPartners() {
       if (item.logoPath) {
         deleteObject(ref(storage, item.logoPath)).catch(() => {});
       }
-      await loadItems();
     } catch (err) {
       console.error(err);
       alert("Tirtiriddu way fashilantay.");
+    }
+  }
+
+  function startEdit(item) {
+    setEditingId(item.id);
+    setError("");
+    // Trigger the hidden file input for this card.
+    requestAnimationFrame(() => editInputRef.current?.click());
+  }
+
+  async function handleEditFileChosen(item, e) {
+    const file = e.target.files?.[0];
+    e.target.value = ""; // allow re-choosing the same file later
+    if (!file) {
+      setEditingId(null);
+      return;
+    }
+    setSaving(true);
+    setError("");
+    try {
+      const path = `content/partners/${Date.now()}-${Math.random().toString(36).slice(2, 8)}-${file.name}`;
+      const storageRef = ref(storage, path);
+      await uploadBytes(storageRef, file);
+      const logoUrl = await getDownloadURL(storageRef);
+      await updateDoc(doc(db, "partners", item.id), { logoUrl, logoPath: path });
+      if (item.logoPath) {
+        deleteObject(ref(storage, item.logoPath)).catch(() => {});
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Sawirka isbeddelkiisu wuu fashilmay. Isku day mar kale.");
+    } finally {
+      setSaving(false);
+      setEditingId(null);
     }
   }
 
@@ -89,7 +124,8 @@ export default function AdminPartners() {
       <h1>Our Partners</h1>
       <p className="lead">
         Halkan waxaad ka maareysaa logo-yada partners-ka ee ku muuqda bogga Home ee "Our Partners".
-        Sawirada waxay si toos ah isugu bedelaan (carousel) 3-3. Kaliya sawiro ayaa la soo geliyaa — qoraal looma baahna.
+        Sawirada waxay si toos ah isugu bedelaan (carousel). Taabo "Edit" si aad sawir jira u bedesho,
+        ama "Delete" si aad u tirtirto — labaduba si toos ah ayay isla markiiba ugu muuqdaan bogga.
       </p>
 
       {error && <p style={{ color: "crimson" }}>{error}</p>}
@@ -114,6 +150,19 @@ export default function AdminPartners() {
         </div>
       </div>
 
+      {/* Hidden input reused for every "Edit" click; opens the file picker
+          for whichever card is currently in editingId. */}
+      <input
+        ref={editInputRef}
+        type="file"
+        accept="image/*"
+        style={{ display: "none" }}
+        onChange={(e) => {
+          const item = items.find((it) => it.id === editingId);
+          if (item) handleEditFileChosen(item, e);
+        }}
+      />
+
       {loading ? (
         <p style={{ marginTop: 20 }}>Loading…</p>
       ) : items.length === 0 ? (
@@ -125,7 +174,17 @@ export default function AdminPartners() {
               {item.logoUrl && (
                 <img src={item.logoUrl} alt="Partner" style={{ height: 60, maxWidth: "100%", objectFit: "contain", background: "#fff" }} />
               )}
-              <button className="btn outline" style={{ fontSize: 10 }} onClick={() => handleDelete(item)}>Delete</button>
+              <div style={{ display: "flex", gap: 6 }}>
+                <button
+                  className="btn outline"
+                  style={{ fontSize: 10 }}
+                  onClick={() => startEdit(item)}
+                  disabled={saving && editingId === item.id}
+                >
+                  {saving && editingId === item.id ? "…" : "Edit"}
+                </button>
+                <button className="btn outline" style={{ fontSize: 10 }} onClick={() => handleDelete(item)}>Delete</button>
+              </div>
             </div>
           ))}
         </div>

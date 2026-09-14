@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { AnimatePresence, motion } from "framer-motion";
 import { db } from "../firebase";
 import Reveal from "./Reveal";
@@ -29,21 +29,19 @@ export default function PartnersCarousel() {
   const perPage = usePerPage();
 
   useEffect(() => {
-    let mounted = true;
-    async function load() {
-      try {
-        const q = query(collection(db, "partners"), orderBy("order", "asc"));
-        const snap = await getDocs(q);
-        const rows = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
-        if (mounted) setPartners(rows);
-      } catch (e) {
+    const q = query(collection(db, "partners"), orderBy("order", "asc"));
+    const unsub = onSnapshot(
+      q,
+      (snap) => {
+        setPartners(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+        setLoading(false);
+      },
+      (e) => {
         console.error(e);
-      } finally {
-        if (mounted) setLoading(false);
+        setLoading(false);
       }
-    }
-    load();
-    return () => { mounted = false; };
+    );
+    return () => unsub();
   }, []);
 
   const pages = useMemo(() => {

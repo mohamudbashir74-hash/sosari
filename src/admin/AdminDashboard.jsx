@@ -1,17 +1,26 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { collection, getDocs, query, where, orderBy, startAt, endAt } from "firebase/firestore";
+import { collection, getDocs, query, orderBy, startAt, endAt } from "firebase/firestore";
 import { db } from "../firebase";
 import { useNavigation } from "../contexts/NavigationContext";
 import {
   IconDoc, IconFlask, IconChart, IconUsers, IconArrow, IconGlobe,
+  IconBulb, IconChat, IconCheck, IconHandshake,
 } from "../components/Icons";
 
-const PANEL_KEYS = {
-  about: { icon: IconUsers, color: "blue", label: "About" },
-  research: { icon: IconFlask, color: "green", label: "Research" },
-  data: { icon: IconChart, color: "purple", label: "Data & Statistics" },
+// Visual identity per known nav key; anything the admin adds later (via
+// Navigation Menu) falls back to DEFAULT_STYLE and still shows up here.
+const SECTION_STYLE = {
+  about: { icon: IconUsers, color: "blue" },
+  research: { icon: IconFlask, color: "green" },
+  data: { icon: IconChart, color: "purple" },
+  policies: { icon: IconBulb, color: "gold" },
+  evaluations: { icon: IconCheck, color: "teal" },
+  knowledge: { icon: IconDoc, color: "rose" },
+  dialogue: { icon: IconChat, color: "orange" },
 };
+const DEFAULT_STYLE = { icon: IconGlobe, color: "blue" };
+const STAT_COLORS = ["blue", "green", "purple", "orange"];
 
 async function countByPrefix(prefix) {
   const q = query(
@@ -26,37 +35,49 @@ async function countByPrefix(prefix) {
 
 export default function AdminDashboard() {
   const { nav: NAV } = useNavigation();
+<<<<<<< HEAD
   const [counts, setCounts] = useState({ about: null, research: null, data: null, messages: null });
+=======
+  const [sectionCounts, setSectionCounts] = useState({});
+  const [partnersCount, setPartnersCount] = useState(null);
+  const [messagesCount, setMessagesCount] = useState(null);
+  const [loading, setLoading] = useState(true);
+>>>>>>> 7e95ed2 (Update project)
 
   useEffect(() => {
     let mounted = true;
     async function load() {
+      setLoading(true);
       try {
-        const [about, research, data, messagesSnap] = await Promise.all([
-          countByPrefix("about/"),
-          countByPrefix("research/"),
-          countByPrefix("data/"),
+        const [results, partnersSnap, messagesSnap] = await Promise.all([
+          Promise.all(NAV.map((g) => countByPrefix(`${g.key}/`))),
+          getDocs(collection(db, "partners")),
           getDocs(collection(db, "messages")),
         ]);
-        if (mounted) {
-          setCounts({ about, research, data, messages: messagesSnap.size });
-        }
+        if (!mounted) return;
+        const map = {};
+        NAV.forEach((g, i) => { map[g.key] = results[i]; });
+        setSectionCounts(map);
+        setPartnersCount(partnersSnap.size);
+        setMessagesCount(messagesSnap.size);
       } catch (e) {
         console.error(e);
+      } finally {
+        if (mounted) setLoading(false);
       }
     }
     load();
     return () => { mounted = false; };
-  }, []);
+  }, [NAV]);
+
+  const totalContent = Object.values(sectionCounts).reduce((sum, n) => sum + (n || 0), 0);
 
   const statCards = [
-    { key: "about", label: "About Pages", value: counts.about, icon: IconUsers, color: "blue" },
-    { key: "research", label: "Research Topics", value: counts.research, icon: IconFlask, color: "green" },
-    { key: "data", label: "Data & Statistics", value: counts.data, icon: IconChart, color: "purple" },
-    { key: "messages", label: "Partner Messages", value: counts.messages, icon: IconUsers, color: "orange" },
+    { key: "sections", label: "Navigation Sections", value: NAV.length, icon: IconGlobe },
+    { key: "content", label: "Total Content Items", value: loading ? null : totalContent, icon: IconDoc },
+    { key: "partners", label: "Partners", value: partnersCount, icon: IconHandshake },
+    { key: "messages", label: "Partner Messages", value: messagesCount, icon: IconUsers },
   ];
-
-  const panelGroups = NAV.filter((g) => PANEL_KEYS[g.key]);
 
   return (
     <div className="adminPage adminDash">
@@ -64,7 +85,7 @@ export default function AdminDashboard() {
         <div>
           <p className="adminWelcomeHi">Welcome back,</p>
           <h1>Admin <span className="adminWave">👋</span></h1>
-          <p className="lead">Manage your content, research areas and data from one place. Here's an overview of your website.</p>
+          <p className="lead">Halkan waxaad ka maareysaa dhammaan content-ka, navigation-ka iyo partners-ka website-ka SOSARI — dhammaantood hal bog.</p>
         </div>
         <div className="adminWelcomeArt">
           <IconGlobe />
@@ -75,59 +96,51 @@ export default function AdminDashboard() {
       </div>
 
       <div className="adminStatGrid">
-        {statCards.map((c) => (
-          <div key={c.key} className={`adminStatCard adminStat-${c.color}`}>
+        {statCards.map((c, i) => (
+          <div key={c.key} className={`adminStatCard adminStat-${STAT_COLORS[i % STAT_COLORS.length]}`}>
             <span className="adminStatIcon"><c.icon /></span>
             <div>
-              <b>{c.value === null ? "…" : c.value}</b>
+              <b>{c.value === null || c.value === undefined ? "…" : c.value}</b>
               <span>{c.label}</span>
             </div>
           </div>
         ))}
       </div>
 
+      <h2 className="adminSectionHeading">Navigation Sections</h2>
       <div className="adminPanelGrid">
-        {panelGroups.map((group) => {
-          const style = PANEL_KEYS[group.key];
-          const leaves = group.items || group.groups.flatMap((g) => g.items);
+        {NAV.map((group, i) => {
+          const style = SECTION_STYLE[group.key] || DEFAULT_STYLE;
+          const leaves = group.items || (group.groups ? group.groups.flatMap((g) => g.items) : []);
+          const count = sectionCounts[group.key];
           return (
             <div key={group.key} className="adminPanel">
               <div className="adminPanelHead">
                 <span className={`adminPanelIcon adminPanelIcon-${style.color}`}><style.icon /></span>
                 <div>
-                  <h3>{style.label}</h3>
-                  <span>Manage content for the {style.label} section</span>
+                  <h3>{group.label}</h3>
+                  <span>{loading ? "Loading…" : `${count || 0} content item${count === 1 ? "" : "s"} · ${leaves.length} link${leaves.length === 1 ? "" : "s"}`}</span>
                 </div>
-                <Link to={`/admin/section/${leaves[0]?.key}`} className="adminPanelViewAll">View all <IconArrow /></Link>
+                {leaves[0] && (
+                  <Link to={`/admin/section/${leaves[0].key}`} className="adminPanelViewAll">View all <IconArrow /></Link>
+                )}
               </div>
               <div className="adminPanelList">
+                {leaves.length === 0 && <p className="adminPanelEmpty">Wali link lama darin. Tag Navigation Menu si aad u darto.</p>}
                 {leaves.slice(0, 10).map((it) => (
                   <Link key={it.key} to={`/admin/section/${it.key}`} className="adminPanelRow">
                     {it.label} <IconArrow />
                   </Link>
                 ))}
+                {leaves.length > 10 && (
+                  <Link to={`/admin/section/${leaves[0].key}`} className="adminPanelRow adminPanelRowMore">
+                    +{leaves.length - 10} kale… <IconArrow />
+                  </Link>
+                )}
               </div>
             </div>
           );
         })}
-
-        <div className="adminPanel adminPanelReports">
-          <div className="adminPanelHead">
-            <span className="adminPanelIcon adminPanelIcon-rose"><IconDoc /></span>
-            <div>
-              <h3>Reports</h3>
-              <span>Manage published reports (Knowledge section)</span>
-            </div>
-            <Link to="/reports" className="adminPanelViewAll">View live page <IconArrow /></Link>
-          </div>
-          <div className="adminPanelList">
-            {(NAV.find((g) => g.key === "knowledge")?.items || []).map((it) => (
-              <Link key={it.key} to={`/admin/section/${it.key}`} className="adminPanelRow">
-                {it.label} <IconArrow />
-              </Link>
-            ))}
-          </div>
-        </div>
       </div>
     </div>
   );

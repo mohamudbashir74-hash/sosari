@@ -154,7 +154,7 @@ export default function Navbar() {
           </Link>
 
           <div className="mobileMenuSocial">
-            <a href="#" aria-label="Facebook"><IconFacebook /></a>
+            <a href="https://www.facebook.com/share/1adtVKQ2KX/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><IconFacebook /></a>
             <a href="#" aria-label="X (Twitter)"><IconX /></a>
             <a href="#" aria-label="LinkedIn"><IconLinkedIn /></a>
             <a href="#" aria-label="YouTube"><IconYoutube /></a>

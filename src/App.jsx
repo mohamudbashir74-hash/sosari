@@ -4,6 +4,7 @@ import { NavigationProvider } from "./contexts/NavigationContext";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
+import OurWork from "./pages/OurWork";
 import SectionLanding from "./pages/SectionLanding";
 import SectionPage from "./pages/SectionPage";
 import ArticlePage from "./pages/ArticlePage";
@@ -61,6 +62,7 @@ export default function App() {
 
           {/* Public site */}
           <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
+          <Route path="/our-work" element={<PublicLayout><OurWork /></PublicLayout>} />
           <Route path="/partner" element={<PublicLayout><PartnerPage /></PublicLayout>} />
           <Route path="/article/:id" element={<PublicLayout><ArticlePage /></PublicLayout>} />
           <Route path="/section/:parent" element={<PublicLayout><SectionLanding /></PublicLayout>} />

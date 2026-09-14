@@ -85,7 +85,7 @@ export default function Home() {
             </Reveal>
             <Reveal as="p" delay={0.08}>{hero.text}</Reveal>
             <RevealGroup className="actions" stagger={0.06}>
-              <RevealItem><Link className="btn gold" to="/partner">Explore Our Work →</Link></RevealItem>
+              <RevealItem><Link className="btn gold" to="/our-work">Explore Our Work →</Link></RevealItem>
               <RevealItem><Link className="btn playOutline" to="#"><span className="playCircle">▶</span> Watch Video</Link></RevealItem>
             </RevealGroup>
 
@@ -119,12 +119,6 @@ export default function Home() {
         </div>
 
         <RevealGroup className="floatRow" stagger={0.08}>
-          <RevealItem className="floatCardWrap">
-            <Link to="/section/data" className="floatCard2 fc-blue">
-              <span className="fc-icon"><IconChart /></span>
-              <span className="fc-text"><b>Data Today</b>A Stronger Tomorrow</span>
-            </Link>
-          </RevealItem>
           <RevealItem className="floatCardWrap">
             <Link to="/section/research" className="floatCard2 fc-green">
               <span className="fc-icon"><IconDoc /></span>

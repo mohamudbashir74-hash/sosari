@@ -345,14 +345,14 @@ h2{font-size:38px;line-height:1.1;letter-spacing:-.8px;margin:7px 0 12px}
 .groupBlockViewAll svg{width:11px;height:11px}
 .groupBlockViewAll:hover{background:var(--gc, var(--blue));color:#fff}
 
-.chipGrid{display:flex;flex-wrap:wrap;gap:9px}
-.chip{display:inline-flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--line);border-radius:999px;
-  padding:8px 15px 8px 8px;font-size:12px;font-weight:700;color:var(--ink);transition:.2s}
-.chip:hover{border-color:var(--gc,var(--blue));color:var(--gc,var(--blue));box-shadow:0 8px 18px rgba(7,31,52,.08);transform:translateY(-2px)}
-.chipIcon{flex:none;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+.chipGrid{display:flex;flex-direction:column;gap:10px}
+.chip{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:12px;
+  padding:13px 18px;font-size:14px;font-weight:700;color:var(--navy,var(--ink));transition:.2s;width:100%}
+.chip:hover{border-color:var(--gc,var(--blue));color:var(--gc,var(--blue));box-shadow:0 8px 18px rgba(7,31,52,.08)}
+.chipIcon{flex:none;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;
   background:color-mix(in srgb, var(--gc, var(--blue)) 14%, #fff);color:var(--gc, var(--blue))}
-.chipIcon svg{width:13px;height:13px}
-.chipArrow{width:13px;height:13px;opacity:.4;transition:.2s}
+.chipIcon svg{width:15px;height:15px}
+.chipArrow{flex:none;margin-left:auto;width:14px;height:14px;opacity:.4;transition:.2s}
 .chip:hover .chipArrow{opacity:1;transform:translateX(2px)}
 
 @media(max-width:1050px){

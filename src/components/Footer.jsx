@@ -200,15 +200,6 @@ export default function Footer() {
               <Link to="/admin/login">Admin</Link>
             </div>
 
-            <button
-              type="button"
-              className="sosariBottomContact"
-              onClick={() => setContactOpen(true)}
-              aria-haspopup="dialog"
-            >
-              <span className="sosariBottomContactIcon">✉</span>
-              Contact
-            </button>
 
             {/* Correct Somali flag: blue field + centered white five-point star */}
             <div className="sosariFlag" aria-label="Somalia flag" title="Somalia">

@@ -1,11 +1,21 @@
 import { Link } from "react-router-dom";
 import { FOOTER_NAV } from "../config/navigation";
 import logo2 from "../assets/logo2.png";
-import { IconWhatsApp, IconFacebook, IconLinkedIn } from "./Icons";
+import {
+  IconWhatsApp, IconFacebook, IconLinkedIn, IconYoutube,
+  IconInstitution, IconGear, IconDoc, IconChevronRight,
+} from "./Icons";
 
 const WHATSAPP_LINK = "https://wa.me/252612880114";
 const FACEBOOK_LINK = "https://www.facebook.com/share/1adtVKQ2KX/";
 const LINKEDIN_LINK = "https://www.linkedin.com/company/somali-statistics-and-research-institute-sosari/";
+const YOUTUBE_LINK = "#";
+
+const COLUMN_ICON = {
+  "INSTITUTE": IconInstitution,
+  "WORK": IconGear,
+  "KNOWLEDGE & ENGAGEMENT": IconDoc,
+};
 
 export default function Footer() {
   return (
@@ -15,9 +25,10 @@ export default function Footer() {
 
       <div className="foot">
         <div className="footBrandCol">
-          <div className="brand">
+          <div className="footerLogoBadge">
             <img className="official-logo footer-logo" src={logo2} alt="SOSARI — Somali Statistics and Research Institute" />
           </div>
+          <h3 className="footerInstituteName">Somali Statistics and Research Institute (SOSARI)</h3>
           <p className="footerTagline">Evidence. Data. Policy. <span>Impact.</span></p>
 
           <div className="footerSocial">
@@ -30,26 +41,37 @@ export default function Footer() {
             <a href={LINKEDIN_LINK} target="_blank" rel="noopener noreferrer" className="footerSocialBtn footerSocialLinkedin" aria-label="LinkedIn">
               <IconLinkedIn />
             </a>
+            <a href={YOUTUBE_LINK} target="_blank" rel="noopener noreferrer" className="footerSocialBtn footerSocialYoutube" aria-label="YouTube">
+              <IconYoutube />
+            </a>
           </div>
 
+          <div className="footerKickerLine" aria-hidden="true" />
           <div className="footerKicker">Research • Policy • A Brighter Somalia</div>
         </div>
 
-        {FOOTER_NAV.map((col) => (
-          <div key={col.title} className="footCol">
-            <h4>{col.title}</h4>
-            {col.items.map((it) =>
-              it.key === "__partner__" ? (
-                <Link key={it.label} to="/partner">{it.label}</Link>
-              ) : (
-                <Link key={it.label} to={`/section/${it.key}`}>{it.label}</Link>
-              )
-            )}
-          </div>
-        ))}
+        {FOOTER_NAV.map((col) => {
+          const ColIcon = COLUMN_ICON[col.title] || IconDoc;
+          return (
+            <div key={col.title} className="footCol">
+              <div className="footColHead">
+                <span className="footColIcon"><ColIcon /></span>
+                <h4>{col.title}</h4>
+              </div>
+              {col.items.map((it) =>
+                it.key === "__partner__" ? (
+                  <Link key={it.label} to="/partner"><IconChevronRight /> {it.label}</Link>
+                ) : (
+                  <Link key={it.label} to={`/section/${it.key}`}><IconChevronRight /> {it.label}</Link>
+                )
+              )}
+            </div>
+          );
+        })}
 
         <div className="footerQuote">
           <p>“Knowledge for a Better Somalia”</p>
+          <span className="footerQuoteLine" aria-hidden="true" />
         </div>
       </div>
 

@@ -34,6 +34,7 @@ button{font-family:inherit;cursor:pointer}
 .navScrolled .official-logo{max-height:56px}
 .footer-logo{width:245px}
 .footerLogoBadge{display:inline-block;background:#fff;padding:14px 20px;border-radius:14px;box-shadow:0 10px 26px rgba(0,0,0,.25)}
+.footerLogoBadge .footer-logo{width:100px}
 .menu{display:flex;align-items:center}
 .mi{position:relative}
 .mi>a{position:relative;display:block;padding:31px 10px;font-size:14px;font-weight:600;letter-spacing:0;cursor:pointer;color:var(--ink);transition:color .2s ease}
@@ -380,25 +381,36 @@ h2{font-size:38px;line-height:1.1;letter-spacing:-.8px;margin:7px 0 12px}
 
 .footer{position:relative;overflow:hidden;background:linear-gradient(135deg,#0c2f5c 0%,#154e91 45%,#1f6fc2 100%);
   color:#d7e6f5;padding:60px 4.8vw 20px}
-.footerDots{position:absolute;top:-40px;right:-40px;width:320px;height:320px;pointer-events:none;
-  background-image:radial-gradient(rgba(255,255,255,.22) 1.5px,transparent 1.5px);background-size:16px 16px;
-  -webkit-mask-image:radial-gradient(circle,#000 0%,transparent 72%);mask-image:radial-gradient(circle,#000 0%,transparent 72%)}
-.footerWave{position:absolute;left:-120px;bottom:-80px;width:420px;height:420px;pointer-events:none;
-  background:radial-gradient(circle,rgba(255,255,255,.08),transparent 70%)}
+.footerDots{position:absolute;top:0;right:0;width:420px;height:100%;pointer-events:none;
+  background-image:radial-gradient(rgba(255,255,255,.28) 1.6px,transparent 1.6px);background-size:17px 17px;
+  -webkit-mask-image:linear-gradient(115deg,transparent 30%,#000 55%,#000 100%);
+  mask-image:linear-gradient(115deg,transparent 30%,#000 55%,#000 100%)}
+.footerWave{position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 900px 260px at 15% -10%,rgba(255,255,255,.14),transparent 60%),
+    radial-gradient(ellipse 700px 240px at 55% 8%,rgba(255,255,255,.09),transparent 65%),
+    radial-gradient(circle 380px at -6% 95%,rgba(255,255,255,.08),transparent 70%)}
 .foot{position:relative;z-index:1;max-width:var(--max);margin:auto;display:grid;
   grid-template-columns:1.5fr 1fr 1fr 1fr 1fr;gap:0;column-gap:30px}
 .footBrandCol{padding-right:10px}
 .footCol{border-left:1px solid rgba(255,255,255,.16);padding-left:30px}
-.footer h4{position:relative;font-size:10px;color:#fff;letter-spacing:1.4px;padding-bottom:10px;margin-bottom:8px}
-.footer h4::after{content:"";position:absolute;left:0;bottom:0;width:26px;height:2px;background:#5fd1c9}
-.footer a{display:block;color:#c3d7ea;font-size:10.5px;padding:4px 0;transition:color .18s ease}
+.footColHead{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.footColIcon{flex:none;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.16);
+  display:flex;align-items:center;justify-content:center;color:#fff}
+.footColIcon svg{width:16px;height:16px}
+.footer h4{position:relative;font-size:11px;color:#fff;letter-spacing:1.4px;padding-bottom:6px;margin:0}
+.footer h4::after{content:"";position:absolute;left:0;bottom:0;width:22px;height:2px;background:#5fd1c9}
+.footer a{display:flex;align-items:center;gap:6px;color:#c3d7ea;font-size:11px;padding:5px 0;transition:color .18s ease}
+.footer a svg{width:11px;height:11px;flex:none;color:#5fd1c9}
 .footer a:hover{color:#fff}
-.footerTagline{font-size:11px;color:#bfd4e8;margin:2px 0 0}
+.footerInstituteName{font-size:14px;font-weight:800;color:#fff;line-height:1.3;margin:14px 0 4px;max-width:230px}
+.footerTagline{font-size:11px;color:#bfd4e8;margin:0}
 .footerTagline span{color:#5fd1c9}
-.footerKicker{margin-top:20px;padding-top:12px;border-top:2px solid #5fd1c9;font-size:9px;font-weight:800;
-  letter-spacing:1.4px;text-transform:uppercase;color:#bfd4e8;display:inline-block}
-.footerQuote{display:flex;align-items:flex-end;justify-content:flex-end;text-align:right}
-.footerQuote p{font-style:italic;font-size:15px;color:#eaf3fb;line-height:1.4;max-width:150px;opacity:.9}
+.footerKickerLine{display:block;width:34px;height:2px;background:#5fd1c9;margin-top:22px}
+.footerKicker{margin-top:10px;font-size:9px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:#bfd4e8}
+.footerQuote{display:flex;flex-direction:column;align-items:flex-end;justify-content:flex-end;text-align:right}
+.footerQuote p{font-style:italic;font-size:15px;color:#eaf3fb;line-height:1.4;max-width:150px;opacity:.9;margin:0}
+.footerQuoteLine{display:block;width:34px;height:2px;background:#5fd1c9;margin-top:12px}
 .copy{position:relative;z-index:1;max-width:var(--max);margin:34px auto 0;border-top:1px solid rgba(255,255,255,.14);
   padding-top:16px;font-size:9px;color:#a9c6e6;display:flex;align-items:center;justify-content:space-between;gap:14px}
 .backToTop{flex:none;width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:transparent;
@@ -712,3 +724,4 @@ h2{font-size:38px;line-height:1.1;letter-spacing:-.8px;margin:7px 0 12px}
 .footerSocialWhatsapp{background:#25D366}
 .footerSocialFacebook{background:#1877f2}
 .footerSocialLinkedin{background:#0a66c2}
+.footerSocialYoutube{background:#ff0000}

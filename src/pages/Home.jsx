@@ -95,14 +95,17 @@ export default function Home() {
           <Reveal as="div" className="heroV2-right" delay={0.15} y={20}>
             <div className="heroPhotoContainer">
               <div className="heroPhotoFrame">
-                {HERO_PHOTOS.map((src, i) => (
-                  <img
-                    key={src}
-                    src={src}
-                    alt="SOSARI team at work"
-                    className={`heroPhotoImg ${i === heroSlide ? "active" : ""}`}
-                  />
-                ))}
+                <div
+                  className="heroPhotoTrack"
+                  style={{ transform: `translateX(-${heroSlide * 100}%)` }}
+                >
+                  {HERO_PHOTOS.map((src, i) => (
+                    <div className="heroPhotoSlide" key={src}>
+                      <img src={src} alt="SOSARI team at work" className="heroPhotoImg" />
+                      {i === heroSlide && <span className="electricSweep" />}
+                    </div>
+                  ))}
+                </div>
               </div>
               {/* Slide Dots / Indicators */}
               <div className="heroDots">

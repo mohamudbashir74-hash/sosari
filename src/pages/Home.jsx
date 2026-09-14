@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
@@ -95,27 +96,19 @@ export default function Home() {
           <Reveal as="div" className="heroV2-right" delay={0.15} y={20}>
             <div className="heroPhotoContainer">
               <div className="heroPhotoFrame">
-                <div
-                  className="heroPhotoTrack"
-                  style={{ transform: `translateX(-${heroSlide * 100}%)` }}
-                >
-                  {HERO_PHOTOS.map((src, i) => (
-                    <div className="heroPhotoSlide" key={src}>
-                      <img src={src} alt="SOSARI team at work" className="heroPhotoImg" />
-                      {i === heroSlide && <span className="electricSweep" />}
-                    </div>
-                  ))}
-                </div>
-              </div>
-              {/* Slide Dots / Indicators */}
-              <div className="heroDots">
-                {HERO_PHOTOS.map((_, i) => (
-                  <button
-                    key={i}
-                    className={`heroDot ${i === heroSlide ? "active" : ""}`}
-                    onClick={() => setHeroSlide(i)}
+                <AnimatePresence mode="popLayout" custom={1}>
+                  <motion.img
+                    key={HERO_PHOTOS[heroSlide]}
+                    src={HERO_PHOTOS[heroSlide]}
+                    alt="SOSARI team at work"
+                    className="heroPhotoImg"
+                    custom={1}
+                    initial={{ x: 60, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    exit={{ x: -60, opacity: 0 }}
+                    transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                   />
-                ))}
+                </AnimatePresence>
               </div>
             </div>
           </Reveal>

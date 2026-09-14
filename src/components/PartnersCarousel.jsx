@@ -1,32 +1,43 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { AnimatePresence, motion } from "framer-motion";
 import { db } from "../firebase";
 import Reveal from "./Reveal";
 import { IconChevronRight } from "./Icons";
 
-const PER_PAGE_DESKTOP = 3;
-const PER_PAGE_MOBILE = 2;
+const SLOTS_DESKTOP = 3;
+const SLOTS_MOBILE = 2;
 const MOBILE_BREAKPOINT = 820;
 const AUTO_MS = 4000;
 
-function usePerPage() {
-  const getPerPage = () =>
-    typeof window !== "undefined" && window.innerWidth <= MOBILE_BREAKPOINT ? PER_PAGE_MOBILE : PER_PAGE_DESKTOP;
-  const [perPage, setPerPage] = useState(getPerPage);
+function useSlotCount() {
+  const getCount = () =>
+    typeof window !== "undefined" && window.innerWidth <= MOBILE_BREAKPOINT ? SLOTS_MOBILE : SLOTS_DESKTOP;
+  const [count, setCount] = useState(getCount);
   useEffect(() => {
-    function onResize() { setPerPage(getPerPage()); }
+    function onResize() { setCount(getCount()); }
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, []);
-  return perPage;
+  return count;
 }
+
+// Enters from the right, exits to the left (direction 1 = forward/auto/Next).
+// Reversed (enters left, exits right) when direction -1 (Prev).
+const slideVariants = {
+  enter: (dir) => ({ x: dir > 0 ? 36 : -36, opacity: 0 }),
+  center: { x: 0, opacity: 1 },
+  exit: (dir) => ({ x: dir > 0 ? -36 : 36, opacity: 0 }),
+};
 
 export default function PartnersCarousel() {
   const [partners, setPartners] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(0);
-  const perPage = usePerPage();
+  const slotCount = useSlotCount();
+
+  const [windowStart, setWindowStart] = useState(0);
+  const [direction, setDirection] = useState(1);
+  const intervalRef = useRef(null);
 
   useEffect(() => {
     const q = query(collection(db, "partners"), orderBy("order", "asc"));
@@ -44,51 +55,59 @@ export default function PartnersCarousel() {
     return () => unsub();
   }, []);
 
-  const pages = useMemo(() => {
-    const chunks = [];
-    for (let i = 0; i < partners.length; i += perPage) {
-      chunks.push(partners.slice(i, i + perPage));
-    }
-    return chunks;
-  }, [partners, perPage]);
-
   useEffect(() => {
-    if (pages.length <= 1) return;
-    const id = setInterval(() => {
-      setPage((p) => (p + 1) % pages.length);
+    setWindowStart(0);
+  }, [partners.length, slotCount]);
+
+  const canRotate = partners.length > slotCount;
+
+  function startAutoTimer() {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    if (!canRotate) return;
+    intervalRef.current = setInterval(() => {
+      setDirection(1);
+      setWindowStart((s) => (s + 1) % partners.length);
     }, AUTO_MS);
-    return () => clearInterval(id);
-  }, [pages.length]);
+  }
 
   useEffect(() => {
-    if (page >= pages.length) setPage(0);
-  }, [pages.length, page]);
+    startAutoTimer();
+    return () => clearInterval(intervalRef.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [canRotate, partners.length]);
+
+  function goNext() {
+    if (!canRotate) return;
+    setDirection(1);
+    setWindowStart((s) => (s + 1) % partners.length);
+    startAutoTimer();
+  }
+  function goPrev() {
+    if (!canRotate) return;
+    setDirection(-1);
+    setWindowStart((s) => (s - 1 + partners.length) % partners.length);
+    startAutoTimer();
+  }
+
+  const visible = useMemo(() => {
+    if (partners.length === 0) return [];
+    const n = Math.min(slotCount, partners.length);
+    return Array.from({ length: n }, (_, i) => partners[(windowStart + i) % partners.length]);
+  }, [partners, slotCount, windowStart]);
 
   if (loading || partners.length === 0) return null;
 
-  const current = pages[page] || [];
-
   function openFull(url) {
     window.open(url, "_blank", "noopener,noreferrer");
-  }
-
-  function goPrev() {
-    setPage((p) => (p - 1 + pages.length) % pages.length);
-  }
-  function goNext() {
-    setPage((p) => (p + 1) % pages.length);
   }
 
   return (
     <section className="partnersSection">
       <div className="wrap">
         <Reveal as="h2" className="partnersTitle">Our Partners</Reveal>
-        <Reveal as="p" delay={0.05} className="partnersSubtitle">
-          Over the years we have partnered with great entities and organizations.
-        </Reveal>
 
         <div className="partnersRow">
-          {pages.length > 1 && (
+          {canRotate && (
             <button
               type="button"
               className="partnersArrow partnersArrowLeft"
@@ -100,33 +119,34 @@ export default function PartnersCarousel() {
           )}
 
           <div className="partnersGrid">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={page}
-                className="partnersGridInner"
-                initial={{ opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -18 }}
-                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-              >
-                {current.map((p) => (
-                  <button
-                    type="button"
-                    className="partnerCard"
-                    key={p.id}
-                    onClick={() => p.logoUrl && openFull(p.logoUrl)}
-                    aria-label="View partner logo"
-                  >
-                    {p.logoUrl && (
-                      <img src={p.logoUrl} alt="Partner logo" className="partnerLogo" />
-                    )}
-                  </button>
-                ))}
-              </motion.div>
-            </AnimatePresence>
+            <div className="partnersGridInner">
+              {visible.map((p, slot) => (
+                <div className="partnerSlot" key={slot}>
+                  <AnimatePresence mode="popLayout" custom={direction}>
+                    <motion.button
+                      type="button"
+                      className="partnerCard"
+                      key={p.id}
+                      custom={direction}
+                      variants={slideVariants}
+                      initial="enter"
+                      animate="center"
+                      exit="exit"
+                      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                      onClick={() => p.logoUrl && openFull(p.logoUrl)}
+                      aria-label="View partner logo"
+                    >
+                      {p.logoUrl && (
+                        <img src={p.logoUrl} alt="Partner logo" className="partnerLogo" />
+                      )}
+                    </motion.button>
+                  </AnimatePresence>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {pages.length > 1 && (
+          {canRotate && (
             <button
               type="button"
               className="partnersArrow partnersArrowRight"
@@ -137,20 +157,6 @@ export default function PartnersCarousel() {
             </button>
           )}
         </div>
-
-        {pages.length > 1 && (
-          <div className="partnersDots">
-            {pages.map((_, i) => (
-              <button
-                key={i}
-                type="button"
-                className={`partnersDot${i === page ? " active" : ""}`}
-                aria-label={`Go to partners page ${i + 1}`}
-                onClick={() => setPage(i)}
-              />
-            ))}
-          </div>
-        )}
       </div>
     </section>
   );

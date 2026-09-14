@@ -5,7 +5,7 @@ import { db } from "../firebase";
 import { useNavigation } from "../contexts/NavigationContext";
 import {
   IconDoc, IconFlask, IconChart, IconUsers, IconArrow, IconGlobe,
-  IconBulb, IconChat, IconCheck, IconHandshake,
+  IconBulb, IconChat, IconCheck, IconHandshake, IconChevronRight,
 } from "../components/Icons";
 
 // Visual identity per known nav key; anything the admin adds later (via
@@ -33,16 +33,66 @@ async function countByPrefix(prefix) {
   return snap.size;
 }
 
+// Body of one dashboard panel. Sections with a flat `items[]` (About,
+// Data & Statistics, ...) render as a simple link list. Sections with
+// `groups[]` (Research Areas: Human Development, Governance & Public
+// Policy, ...) render each subcap as a tappable header — tapping it opens
+// that group and shows only its own items, so the admin can drill down
+// group by group instead of facing one giant merged list.
+function PanelBody({ group }) {
+  const [openGroup, setOpenGroup] = useState(null);
+
+  if (!group.groups) {
+    const leaves = group.items || [];
+    return (
+      <div className="adminPanelList">
+        {leaves.length === 0 && <p className="adminPanelEmpty">Wali link lama darin. Tag Navigation Menu si aad u darto.</p>}
+        {leaves.map((it) => (
+          <Link key={it.key} to={`/admin/section/${it.key}`} className="adminPanelRow">
+            {it.label} <IconArrow />
+          </Link>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="adminPanelGroups">
+      {group.groups.map((sub, gIdx) => {
+        const isOpen = openGroup === gIdx;
+        return (
+          <div key={sub.subcap} className="adminPanelSubGroup">
+            <button
+              type="button"
+              className="adminPanelSubHead"
+              onClick={() => setOpenGroup(isOpen ? null : gIdx)}
+            >
+              <span className={`adminPanelSubChevron${isOpen ? " open" : ""}`}><IconChevronRight /></span>
+              {sub.subcap}
+              <span className="adminPanelSubCount">{sub.items.length}</span>
+            </button>
+            {isOpen && (
+              <div className="adminPanelList adminPanelSubList">
+                {sub.items.map((it) => (
+                  <Link key={it.key} to={`/admin/section/${it.key}`} className="adminPanelRow">
+                    {it.label} <IconArrow />
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function AdminDashboard() {
   const { nav: NAV } = useNavigation();
-<<<<<<< HEAD
-  const [counts, setCounts] = useState({ about: null, research: null, data: null, messages: null });
-=======
   const [sectionCounts, setSectionCounts] = useState({});
   const [partnersCount, setPartnersCount] = useState(null);
   const [messagesCount, setMessagesCount] = useState(null);
   const [loading, setLoading] = useState(true);
->>>>>>> 7e95ed2 (Update project)
 
   useEffect(() => {
     let mounted = true;
@@ -109,9 +159,12 @@ export default function AdminDashboard() {
 
       <h2 className="adminSectionHeading">Navigation Sections</h2>
       <div className="adminPanelGrid">
-        {NAV.map((group, i) => {
+        {NAV.map((group) => {
           const style = SECTION_STYLE[group.key] || DEFAULT_STYLE;
-          const leaves = group.items || (group.groups ? group.groups.flatMap((g) => g.items) : []);
+          const leafCount = group.items
+            ? group.items.length
+            : (group.groups || []).reduce((sum, g) => sum + g.items.length, 0);
+          const firstLeafKey = group.items?.[0]?.key || group.groups?.[0]?.items?.[0]?.key;
           const count = sectionCounts[group.key];
           return (
             <div key={group.key} className="adminPanel">
@@ -119,25 +172,13 @@ export default function AdminDashboard() {
                 <span className={`adminPanelIcon adminPanelIcon-${style.color}`}><style.icon /></span>
                 <div>
                   <h3>{group.label}</h3>
-                  <span>{loading ? "Loading…" : `${count || 0} content item${count === 1 ? "" : "s"} · ${leaves.length} link${leaves.length === 1 ? "" : "s"}`}</span>
+                  <span>{loading ? "Loading…" : `${count || 0} content item${count === 1 ? "" : "s"} · ${leafCount} link${leafCount === 1 ? "" : "s"}`}</span>
                 </div>
-                {leaves[0] && (
-                  <Link to={`/admin/section/${leaves[0].key}`} className="adminPanelViewAll">View all <IconArrow /></Link>
+                {firstLeafKey && (
+                  <Link to={`/admin/section/${firstLeafKey}`} className="adminPanelViewAll">View all <IconArrow /></Link>
                 )}
               </div>
-              <div className="adminPanelList">
-                {leaves.length === 0 && <p className="adminPanelEmpty">Wali link lama darin. Tag Navigation Menu si aad u darto.</p>}
-                {leaves.slice(0, 10).map((it) => (
-                  <Link key={it.key} to={`/admin/section/${it.key}`} className="adminPanelRow">
-                    {it.label} <IconArrow />
-                  </Link>
-                ))}
-                {leaves.length > 10 && (
-                  <Link to={`/admin/section/${leaves[0].key}`} className="adminPanelRow adminPanelRowMore">
-                    +{leaves.length - 10} kale… <IconArrow />
-                  </Link>
-                )}
-              </div>
+              <PanelBody group={group} />
             </div>
           );
         })}

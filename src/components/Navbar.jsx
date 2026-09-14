@@ -113,6 +113,13 @@ export default function Navbar() {
                   <small>Follow our page</small>
                 </span>
               </a>
+              <a href={LINKEDIN_LINK} target="_blank" rel="noopener noreferrer" className="contactDropRow contactDropLinkedin">
+                <span className="contactDropIcon"><IconLinkedIn /></span>
+                <span>
+                  <b>LinkedIn</b>
+                  <small>Connect with us</small>
+                </span>
+              </a>
             </div>
           </div>
 

@@ -16,8 +16,6 @@ import heroPhoto2 from "../assets/hero-photo2.jpg";
 const HERO_PHOTOS = [heroPhoto, heroPhoto1, heroPhoto2];
 const HERO_SLIDE_MS = 4000;
 
-// Splits "...in Somalia." off the end of the headline so it can be
-// rendered in the accent (teal) color, like the SOSARI brand hero.
 function splitHeroTitle(title) {
   const match = title.match(/(.*?)(\bSomalia\b.*)$/i);
   if (!match) return { lead: title, accent: "" };
@@ -95,18 +93,23 @@ export default function Home() {
           </div>
 
           <Reveal as="div" className="heroV2-right" delay={0.15} y={20}>
-            {/* Real photo — swap by replacing src/assets/hero-photo.jpg with
-                your own licensed image; the frame stays as-is. */}
             <div className="heroPhotoFrame">
-              {HERO_PHOTOS.map((src, i) => (
-                <img
-                  key={src}
-                  src={src}
-                  alt="SOSARI team at work"
-                  className="heroPhotoImg heroPhotoImgSlide"
-                  style={{ opacity: i === heroSlide ? 1 : 0 }}
-                />
-              ))}
+              <div
+                className="heroPhotoSlider"
+                style={{
+                  transform: `translateX(-${heroSlide * 100}%)`,
+                  transition: "transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
+                }}
+              >
+                {HERO_PHOTOS.map((src, i) => (
+                  <img
+                    key={src}
+                    src={src}
+                    alt="SOSARI team at work"
+                    className="heroPhotoImg"
+                  />
+                ))}
+              </div>
             </div>
           </Reveal>
         </div>

@@ -4,9 +4,32 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, storage } from "../firebase";
 
 export default function PartnerPage() {
-  const [form, setForm] = useState({ nameOrg: "", email: "", inquiry: "" });
+  const [form, setForm] = useState({
+    fullName: "",
+    organization: "",
+    position: "",
+    email: "",
+    workType: "",
+    inquiryDetails: "",
+    website: "",
+    phone: "",
+  });
   const [file, setFile] = useState(null);
   const [status, setStatus] = useState("idle"); // idle | sending | sent | error
+
+  const workOptions = [
+    "Research Partnership",
+    "Data & Statistics",
+    "Monitoring & Evaluation",
+    "Policy & Advisory",
+    "Technical Assistance",
+    "Consultancy",
+    "Training & Capacity Building",
+    "Joint Project / Consortium",
+    "Academic Collaboration",
+    "Funding / Grant Partnership",
+    "Other",
+  ];
 
   function update(field, value) {
     setForm((f) => ({ ...f, [field]: value }));
@@ -18,7 +41,17 @@ export default function PartnerPage() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (!form.nameOrg || !form.email || !form.inquiry) return;
+    if (
+      !form.fullName ||
+      !form.organization ||
+      !form.position ||
+      !form.email ||
+      !form.workType ||
+      !form.inquiryDetails
+    ) {
+      return;
+    }
+
     setStatus("sending");
     try {
       let fileUrl = "";
@@ -32,17 +65,32 @@ export default function PartnerPage() {
       }
 
       await addDoc(collection(db, "messages"), {
-        nameOrg: form.nameOrg,
+        fullName: form.fullName,
+        organization: form.organization,
+        position: form.position,
         email: form.email,
-        inquiry: form.inquiry,
+        workType: form.workType,
+        inquiryDetails: form.inquiryDetails,
+        website: form.website || "",
+        phone: form.phone || "",
         fileUrl,
         fileName,
         createdAt: serverTimestamp(),
         createdAtMs: Date.now(),
         read: false,
       });
+
       setStatus("sent");
-      setForm({ nameOrg: "", email: "", inquiry: "" });
+      setForm({
+        fullName: "",
+        organization: "",
+        position: "",
+        email: "",
+        workType: "",
+        inquiryDetails: "",
+        website: "",
+        phone: "",
+      });
       setFile(null);
     } catch (err) {
       console.error(err);
@@ -54,9 +102,8 @@ export default function PartnerPage() {
     <div className="sectionPageWrap">
       <header className="pageHero">
         <div className="wrap">
-          <div className="eyebrow">Work with SOSARI</div>
-          <h1>Start a conversation.</h1>
-          <p>Bring the question. SOSARI can assemble the appropriate methods, expertise and evidence pathway.</p>
+          <div className="eyebrow">WORK WITH SOSARI</div>
+          <h1>Tell us about your inquiry or proposed collaboration.</h1>
         </div>
       </header>
 
@@ -65,34 +112,145 @@ export default function PartnerPage() {
           {status === "sent" ? (
             <div className="box">
               <h3>Mahadsanid!</h3>
-              <p>Codsigaaga waa la helay. Kooxda SOSARI ayaa dhawaan kula soo xiriiri doonta.</p>
+              <p>
+                Codsigaaga waa la helay. Kooxda SOSARI ayaa dhawaan kula soo
+                xiriiri doonta.
+              </p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="partnerForm">
-              <div className="eyebrow2" style={{ marginBottom: 4 }}>Work with SOSARI — Inquiry</div>
+              <label>
+                <span>
+                  Full Name<span className="req">*</span>
+                </span>
+                <input
+                  required
+                  placeholder="Enter your full name"
+                  value={form.fullName}
+                  onChange={(e) => update("fullName", e.target.value)}
+                />
+              </label>
 
               <label>
-                <span>Full Name / Organization <span className="req">*</span></span>
-                <input required value={form.nameOrg} onChange={(e) => update("nameOrg", e.target.value)} />
+                <span>
+                  Organization / Institution<span className="req">*</span>
+                </span>
+                <input
+                  required
+                  placeholder="Enter organization or institution"
+                  value={form.organization}
+                  onChange={(e) => update("organization", e.target.value)}
+                />
               </label>
+
               <label>
-                <span>Email Address <span className="req">*</span></span>
-                <input required type="email" value={form.email} onChange={(e) => update("email", e.target.value)} />
+                <span>
+                  Position / Title<span className="req">*</span>
+                </span>
+                <input
+                  required
+                  placeholder="Enter your position"
+                  value={form.position}
+                  onChange={(e) => update("position", e.target.value)}
+                />
               </label>
+
               <label>
-                <span>Briefly Describe Your Inquiry / Area of Interest <span className="req">*</span></span>
-                <textarea required rows={6} value={form.inquiry} onChange={(e) => update("inquiry", e.target.value)} />
+                <span>
+                  Email Address<span className="req">*</span>
+                </span>
+                <input
+                  required
+                  type="email"
+                  placeholder="Enter your email address"
+                  value={form.email}
+                  onChange={(e) => update("email", e.target.value)}
+                />
               </label>
+
               <label>
-                <span>Upload ToR / Relevant Document <span className="optional">(Optional)</span></span>
-                <input type="file" onChange={handleFile} accept=".pdf,.doc,.docx" />
+                <span>
+                  How would you like to work with SOSARI?<span className="req">*</span>
+                </span>
+                <select
+                  required
+                  value={form.workType}
+                  onChange={(e) => update("workType", e.target.value)}
+                >
+                  <option value="" disabled>
+                    Select an option
+                  </option>
+                  {workOptions.map((opt) => (
+                    <option key={opt} value={opt}>
+                      {opt}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <label>
+                <span>
+                  Tell us about your inquiry or proposed collaboration.
+                  <span className="req">*</span>
+                </span>
+                <textarea
+                  required
+                  rows={5}
+                  placeholder="Please briefly describe your area of interest, needs, or proposed collaboration"
+                  value={form.inquiryDetails}
+                  onChange={(e) => update("inquiryDetails", e.target.value)}
+                />
+              </label>
+
+              <label>
+                <span>
+                  Upload ToR / Concept Note / Relevant Document{" "}
+                  <span className="optional">(Optional)</span>
+                </span>
+                <input
+                  type="file"
+                  onChange={handleFile}
+                  accept=".pdf,.doc,.docx"
+                />
                 {file && <span className="fileChosen">{file.name}</span>}
               </label>
 
-              <button className="btn primary" type="submit" disabled={status === "sending"}>
-                {status === "sending" ? "Sending…" : "Submit Inquiry"}
+              <label>
+                <span>
+                  Organization Website <span className="optional">(Optional)</span>
+                </span>
+                <input
+                  type="url"
+                  placeholder="Enter website"
+                  value={form.website}
+                  onChange={(e) => update("website", e.target.value)}
+                />
+              </label>
+
+              <label>
+                <span>
+                  Phone / WhatsApp <span className="optional">(Optional)</span>
+                </span>
+                <input
+                  type="tel"
+                  placeholder="Enter phone number"
+                  value={form.phone}
+                  onChange={(e) => update("phone", e.target.value)}
+                />
+              </label>
+
+              <button
+                className="btn primary"
+                type="submit"
+                disabled={status === "sending"}
+              >
+                {status === "sending" ? "Sending…" : "SUBMIT INQUIRY"}
               </button>
-              {status === "error" && <p style={{ color: "crimson" }}>Wax baa qaldamay. Isku day mar kale.</p>}
+              {status === "error" && (
+                <p style={{ color: "crimson" }}>
+                  Wax baa qaldamay. Isku day mar kale.
+                </p>
+              )}
             </form>
           )}
         </div>

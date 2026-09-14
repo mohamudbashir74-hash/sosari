@@ -1259,6 +1259,64 @@ export default function Footer() {
           }
         }
 
+
+        /* FINAL LOGO FIX
+           Keep the SOSARI logo compact and completely inside its white box.
+           The title below must never be covered by the image. */
+        .sosariBrand {
+          position: relative;
+          overflow: visible;
+        }
+
+        .sosariLogoBox {
+          position: relative;
+          width: 175px;
+          height: 120px;
+          margin: 0;
+          padding: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+          box-sizing: border-box;
+          border-radius: 16px;
+        }
+
+        .sosariLogo {
+          display: block;
+          width: auto;
+          height: auto;
+          max-width: 100%;
+          max-height: 100%;
+          object-fit: contain;
+          object-position: center;
+          margin: 0;
+        }
+
+        .sosariBrand h3 {
+          position: relative;
+          z-index: 2;
+          width: 100%;
+          max-width: 310px;
+          margin: 14px 0 6px;
+          font-size: 17px;
+          line-height: 1.28;
+          overflow: visible;
+        }
+
+        @media (max-width: 600px) {
+          .sosariLogoBox {
+            width: 190px;
+            height: 135px;
+          }
+
+          .sosariBrand h3 {
+            max-width: 100%;
+            margin-top: 14px;
+            font-size: 16px;
+          }
+        }
+
       `}</style>
     </>
   );

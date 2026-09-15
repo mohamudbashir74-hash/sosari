@@ -23,6 +23,7 @@ export default function Navbar() {
   const { nav: NAV } = useNavigation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [openKey, setOpenKey] = useState(null);
   const location = useLocation();
   const isHome = location.pathname === "/";
 
@@ -39,6 +40,13 @@ export default function Navbar() {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
+
+  // Close any open dropdown the moment the route changes — this is what
+  // prevents a dropdown from staying visually open (covering the new page)
+  // right after the person picks an item from it.
+  useEffect(() => {
+    setOpenKey(null);
+  }, [location.pathname]);
 
   function isActive(key) {
     return location.pathname === `/section/${key}` || location.pathname.startsWith(`/section/${key}/`);
@@ -58,27 +66,36 @@ export default function Navbar() {
           </div>
 
           {NAV.map((group) => (
-            <div className="mi" key={group.key}>
-              <Link to={`/section/${group.key}`} className={isActive(group.key) ? "navActive" : ""}>
+            <div
+              className="mi"
+              key={group.key}
+              onMouseEnter={() => setOpenKey(group.key)}
+              onMouseLeave={() => setOpenKey((k) => (k === group.key ? null : k))}
+            >
+              <Link
+                to={`/section/${group.key}`}
+                className={isActive(group.key) ? "navActive" : ""}
+                onClick={() => setOpenKey(null)}
+              >
                 {group.label}
               </Link>
 
               {group.groups ? (
-                <div className="drop research-menu">
+                <div className={`drop research-menu${openKey === group.key ? " dropOpen" : ""}`}>
                   {group.groups.map((g, gi) => (
                     <div key={g.subcap} className="researchGroupCol" style={{ "--gi": gi }}>
                       <div className="subcap">{g.subcap}</div>
                       {g.items.map((it, idx) => (
-                        <Link key={it.key} to={`/section/${it.key}`} style={{ "--i": idx }}>{it.label}</Link>
+                        <Link key={it.key} to={`/section/${it.key}`} style={{ "--i": idx }} onClick={() => setOpenKey(null)}>{it.label}</Link>
                       ))}
                     </div>
                   ))}
                 </div>
               ) : (
-                <div className="drop">
+                <div className={`drop${openKey === group.key ? " dropOpen" : ""}`}>
                   <div className="cap">{group.cap}</div>
                   {group.items.map((it, idx) => (
-                    <Link key={it.key} to={`/section/${it.key}`} style={{ "--i": idx }}>{it.label}</Link>
+                    <Link key={it.key} to={`/section/${it.key}`} style={{ "--i": idx }} onClick={() => setOpenKey(null)}>{it.label}</Link>
                   ))}
                 </div>
               )}

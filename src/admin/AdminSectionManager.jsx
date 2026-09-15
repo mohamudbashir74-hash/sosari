@@ -12,6 +12,51 @@ const EMPTY_FORM = {
   published: true, featuredHome: false, order: 0,
 };
 
+// Preset max dimensions the admin can pick before uploading, so a photo
+// straight off a phone doesn't end up huge on the live site.
+const IMAGE_SIZE_PRESETS = {
+  large: { label: "Weyn (1920px)", maxDim: 1920, quality: 0.85 },
+  medium: { label: "Dhexdhexaad (1200px) — la talinayo", maxDim: 1200, quality: 0.82 },
+  small: { label: "Yar (800px)", maxDim: 800, quality: 0.78 },
+};
+
+// Resizes/compresses an image file in the browser before it's uploaded,
+// so the admin can shrink a large photo's size without extra software.
+function resizeImageFile(file, maxDim, quality) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      let { width, height } = img;
+      if (width > maxDim || height > maxDim) {
+        if (width >= height) {
+          height = Math.round((height * maxDim) / width);
+          width = maxDim;
+        } else {
+          width = Math.round((width * maxDim) / height);
+          height = maxDim;
+        }
+      }
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, width, height);
+      URL.revokeObjectURL(url);
+      canvas.toBlob(
+        (blob) => {
+          if (!blob) { reject(new Error("Resize failed")); return; }
+          resolve(new File([blob], file.name.replace(/\.\w+$/, ".jpg"), { type: "image/jpeg" }));
+        },
+        "image/jpeg",
+        quality
+      );
+    };
+    img.onerror = reject;
+    img.src = url;
+  });
+}
+
 export default function AdminSectionManager() {
   const { sectionIndex: SECTION_INDEX } = useNavigation();
   const { parent, child } = useParams();
@@ -22,8 +67,18 @@ export default function AdminSectionManager() {
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState(null); // null = not editing, "new" = creating
   const [form, setForm] = useState(EMPTY_FORM);
+
+  // Cover image
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState("");
+  const [imageSize, setImageSize] = useState("medium");
+
+  // Gallery (more photos)
+  const [galleryExisting, setGalleryExisting] = useState([]); // [{url, path}] already saved
+  const [galleryNewFiles, setGalleryNewFiles] = useState([]); // File[] not yet uploaded
+  const [galleryNewPreviews, setGalleryNewPreviews] = useState([]); // object URLs matching galleryNewFiles
+  const [gallerySize, setGallerySize] = useState("medium");
+
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
@@ -39,18 +94,25 @@ export default function AdminSectionManager() {
 
   useEffect(() => {
     loadItems();
+    resetFormState();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sectionKey]);
+
+  function resetFormState() {
     setEditingId(null);
     setForm(EMPTY_FORM);
     setImageFile(null);
     setImagePreview("");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sectionKey]);
+    setImageSize("medium");
+    setGalleryExisting([]);
+    setGalleryNewFiles([]);
+    setGalleryNewPreviews([]);
+    setGallerySize("medium");
+  }
 
   function startNew() {
+    resetFormState();
     setEditingId("new");
-    setForm(EMPTY_FORM);
-    setImageFile(null);
-    setImagePreview("");
     setError("");
   }
 
@@ -69,14 +131,16 @@ export default function AdminSectionManager() {
     });
     setImageFile(null);
     setImagePreview(item.imageUrl || "");
+    setImageSize("medium");
+    setGalleryExisting(Array.isArray(item.gallery) ? item.gallery : []);
+    setGalleryNewFiles([]);
+    setGalleryNewPreviews([]);
+    setGallerySize("medium");
     setError("");
   }
 
   function cancelEdit() {
-    setEditingId(null);
-    setForm(EMPTY_FORM);
-    setImageFile(null);
-    setImagePreview("");
+    resetFormState();
     setError("");
   }
 
@@ -85,6 +149,23 @@ export default function AdminSectionManager() {
     if (!file) return;
     setImageFile(file);
     setImagePreview(URL.createObjectURL(file));
+  }
+
+  function onGalleryFilesChange(e) {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+    setGalleryNewFiles((prev) => [...prev, ...files]);
+    setGalleryNewPreviews((prev) => [...prev, ...files.map((f) => URL.createObjectURL(f))]);
+    e.target.value = ""; // allow picking the same file again / adding more right after
+  }
+
+  function removeExistingGalleryPhoto(index) {
+    setGalleryExisting((prev) => prev.filter((_, i) => i !== index));
+  }
+
+  function removeNewGalleryPhoto(index) {
+    setGalleryNewFiles((prev) => prev.filter((_, i) => i !== index));
+    setGalleryNewPreviews((prev) => prev.filter((_, i) => i !== index));
   }
 
   async function handleSave(e) {
@@ -100,11 +181,13 @@ export default function AdminSectionManager() {
       let imagePath = editingId !== "new" ? (items.find((i) => i.id === editingId)?.imagePath || "") : "";
 
       if (imageFile) {
-        const path = `content/${sectionKey}/${Date.now()}-${imageFile.name}`;
+        const preset = IMAGE_SIZE_PRESETS[imageSize] || IMAGE_SIZE_PRESETS.medium;
+        const resized = await resizeImageFile(imageFile, preset.maxDim, preset.quality);
+        const path = `content/${sectionKey}/${Date.now()}-${resized.name}`;
         const storageRef = ref(storage, path);
-        await uploadBytes(storageRef, imageFile);
+        await uploadBytes(storageRef, resized);
         imageUrl = await getDownloadURL(storageRef);
-        // delete old image if replacing
+        // delete old cover image if replacing
         if (editingId !== "new") {
           const old = items.find((i) => i.id === editingId);
           if (old?.imagePath && old.imagePath !== path) {
@@ -114,12 +197,43 @@ export default function AdminSectionManager() {
         imagePath = path;
       }
 
+      // Upload any newly-added gallery photos (resized first).
+      let uploadedGallery = [];
+      if (galleryNewFiles.length > 0) {
+        const preset = IMAGE_SIZE_PRESETS[gallerySize] || IMAGE_SIZE_PRESETS.medium;
+        uploadedGallery = await Promise.all(
+          galleryNewFiles.map(async (file, idx) => {
+            const resized = await resizeImageFile(file, preset.maxDim, preset.quality);
+            const path = `content/${sectionKey}/gallery/${Date.now()}-${idx}-${resized.name}`;
+            const storageRef = ref(storage, path);
+            await uploadBytes(storageRef, resized);
+            const url = await getDownloadURL(storageRef);
+            return { url, path };
+          })
+        );
+      }
+
+      // Delete any existing gallery photos the admin removed from this item.
+      if (editingId !== "new") {
+        const old = items.find((i) => i.id === editingId);
+        const oldGallery = Array.isArray(old?.gallery) ? old.gallery : [];
+        const keptPaths = new Set(galleryExisting.map((g) => g.path));
+        oldGallery.forEach((g) => {
+          if (g.path && !keptPaths.has(g.path)) {
+            deleteObject(ref(storage, g.path)).catch(() => {});
+          }
+        });
+      }
+
+      const gallery = [...galleryExisting, ...uploadedGallery];
+
       const payload = {
         ...form,
         order: Number(form.order) || 0,
         sectionKey,
         imageUrl,
         imagePath,
+        gallery,
       };
 
       if (editingId === "new") {
@@ -148,6 +262,11 @@ export default function AdminSectionManager() {
       await deleteDoc(doc(db, "content", item.id));
       if (item.imagePath) {
         deleteObject(ref(storage, item.imagePath)).catch(() => {});
+      }
+      if (Array.isArray(item.gallery)) {
+        item.gallery.forEach((g) => {
+          if (g.path) deleteObject(ref(storage, g.path)).catch(() => {});
+        });
       }
       await loadItems();
     } catch (err) {
@@ -197,10 +316,47 @@ export default function AdminSectionManager() {
             </label>
           </div>
 
-          <label>Sawir (image)
+          {/* COVER IMAGE */}
+          <label>Sawirka hore (Cover image)
             <input type="file" accept="image/*" onChange={onImageChange} />
           </label>
           {imagePreview && <img src={imagePreview} alt="preview" className="adminImgPreview" />}
+          <label>Cabbirka sawirka hore (Image size)
+            <select value={imageSize} onChange={(e) => setImageSize(e.target.value)}>
+              {Object.entries(IMAGE_SIZE_PRESETS).map(([key, p]) => (
+                <option key={key} value={key}>{p.label}</option>
+              ))}
+            </select>
+          </label>
+
+          {/* GALLERY */}
+          <label>Sawirro dheeri ah (More photos) — waxaad dhamaystiri kartaa marar badan
+            <input type="file" accept="image/*" multiple onChange={onGalleryFilesChange} />
+          </label>
+          <label>Cabbirka sawirrada dheeriga ah (Gallery image size)
+            <select value={gallerySize} onChange={(e) => setGallerySize(e.target.value)}>
+              {Object.entries(IMAGE_SIZE_PRESETS).map(([key, p]) => (
+                <option key={key} value={key}>{p.label}</option>
+              ))}
+            </select>
+          </label>
+
+          {(galleryExisting.length > 0 || galleryNewPreviews.length > 0) && (
+            <div className="adminGalleryGrid">
+              {galleryExisting.map((g, i) => (
+                <div className="adminGalleryThumb" key={`existing-${g.path || i}`}>
+                  <img src={g.url} alt="" />
+                  <button type="button" className="adminGalleryRemove" onClick={() => removeExistingGalleryPhoto(i)}>✕</button>
+                </div>
+              ))}
+              {galleryNewPreviews.map((src, i) => (
+                <div className="adminGalleryThumb adminGalleryThumbNew" key={`new-${i}`}>
+                  <img src={src} alt="" />
+                  <button type="button" className="adminGalleryRemove" onClick={() => removeNewGalleryPhoto(i)}>✕</button>
+                </div>
+              ))}
+            </div>
+          )}
 
           <div className="adminFormRow">
             <label className="checkboxLabel">

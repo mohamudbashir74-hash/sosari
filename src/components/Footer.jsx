@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FOOTER_NAV } from "../config/navigation";
+import { useNavigation } from "../contexts/NavigationContext";
 import logo2 from "../assets/logo2.png";
 import {
   IconWhatsApp,
@@ -30,7 +31,7 @@ const FACEBOOK_LINK = "https://www.facebook.com/share/1adtVKQ2KX/";
 const LINKEDIN_LINK =
   "https://www.linkedin.com/company/somali-statistics-and-research-institute-sosari/";
 const INSTAGRAM_LINK = "#";
-const EMAIL_LINK = "mailto:Info@sosari.org";
+const EMAIL_LINK = "mailto:info@sosari.so";
 
 const COLUMN_ICON = {
   INSTITUTE: IconInstitution,
@@ -38,7 +39,25 @@ const COLUMN_ICON = {
   "KNOWLEDGE & ENGAGEMENT": IconDoc,
 };
 
+// A footer item marked isParent points at a whole category (e.g. "Research"),
+// which by itself only lands on that category's overview/listing page.
+// To take the person straight to real content instead of another list of
+// links, we resolve it to that category's first actual sub-page.
+function resolveFooterHref(nav, key) {
+  if (!key.includes("/")) {
+    const group = nav.find((g) => g.key === key);
+    if (group) {
+      const firstChild = group.items
+        ? group.items[0]
+        : group.groups?.[0]?.items?.[0];
+      if (firstChild) return `/section/${firstChild.key}`;
+    }
+  }
+  return `/section/${key}`;
+}
+
 export default function Footer() {
+  const { nav: NAV } = useNavigation();
   const [contactOpen, setContactOpen] = useState(false);
 
   const closeContact = () => setContactOpen(false);
@@ -119,7 +138,7 @@ export default function Footer() {
                         <span>{it.label}</span>
                       </Link>
                     ) : (
-                      <Link key={it.label} to={`/section/${it.key}`}>
+                      <Link key={it.label} to={resolveFooterHref(NAV, it.key)}>
                         <IconChevronRight />
                         <span>{it.label}</span>
                       </Link>
@@ -160,7 +179,7 @@ export default function Footer() {
                 </span>
                 <div>
                   <strong>Email Us</strong>
-                  <a href={EMAIL_LINK}>Info@sosari.org</a>
+                  <a href={EMAIL_LINK}>info@sosari.so</a>
                 </div>
               </div>
 
@@ -328,7 +347,7 @@ export default function Footer() {
                 </span>
                 <div>
                   <strong>Email</strong>
-                  <small>Info@sosari.org</small>
+                  <small>info@sosari.so</small>
                 </div>
               </a>
             </div>

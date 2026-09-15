@@ -108,6 +108,15 @@ export default function SectionPage() {
                   para.trim() ? <p key={i}>{para}</p> : <br key={i} />
                 )}
               </div>
+              {Array.isArray(items[0].gallery) && items[0].gallery.length > 0 && (
+                <div className="articleGallery">
+                  {items[0].gallery.map((g, i) => (
+                    <a href={g.url} target="_blank" rel="noopener noreferrer" key={g.path || i} className="articleGalleryItem">
+                      <img src={g.url} alt="" />
+                    </a>
+                  ))}
+                </div>
+              )}
             </Reveal>
           ) : (
             <RevealGroup className="pubs" stagger={0.07}>

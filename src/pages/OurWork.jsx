@@ -98,7 +98,7 @@ const DEFAULT_AREAS = [
     icon: "db",
     title: "Capacity Building",
     text: "Training and sustainable technical support to strengthen institutional capacity.",
-    to: "/section/capacity-building",
+    to: "/section/knowledge",
   },
 ];
 

@@ -17,7 +17,7 @@ const DEFAULTS = {
     { num: "03", icon: "users", title: "Policy & Advisory", text: "", to: "/section/policies" },
     { num: "04", icon: "globe", title: "M&E & Impact", text: "", to: "/section/evaluations" },
     { num: "05", icon: "bulb", title: "Knowledge", text: "", to: "/section/knowledge" },
-    { num: "06", icon: "db", title: "Capacity Building", text: "", to: "/section/capacity-building" },
+    { num: "06", icon: "db", title: "Capacity Building", text: "", to: "/section/knowledge" },
   ],
 };
 

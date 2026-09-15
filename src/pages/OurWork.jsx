@@ -96,7 +96,7 @@ const DEFAULT_AREAS = [
   {
     num: "06",
     icon: "db",
-    title: "Capacity Building",
+    title: "Dialogue",
     text: "Training and sustainable technical support to strengthen institutional capacity.",
     to: "/section/dialogue",
   },

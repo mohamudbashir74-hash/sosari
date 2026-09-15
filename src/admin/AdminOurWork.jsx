@@ -7,7 +7,7 @@ const DEFAULTS = {
   eyebrow: "Our Work",
   title: "How SOSARI works.",
   lead:
-    "Six integrated areas — research, data and statistics, policy and advisory, monitoring and evaluation, knowledge sharing, and capacity building — all designed to turn evidence into impact.",
+    "Six integrated areas — research, data and statistics, policy and advisory, monitoring and evaluation, knowledge sharing, and Dialogue — all designed to turn evidence into impact.",
   ctaEyebrow: "Work with SOSARI",
   ctaTitle: "Have a research, data, policy or evaluation challenge?",
   ctaText: "Bring the question. SOSARI can assemble the appropriate methods, expertise and evidence pathway.",
@@ -17,7 +17,7 @@ const DEFAULTS = {
     { num: "03", icon: "users", title: "Policy & Advisory", text: "", to: "/section/policies" },
     { num: "04", icon: "globe", title: "M&E & Impact", text: "", to: "/section/evaluations" },
     { num: "05", icon: "bulb", title: "Knowledge", text: "", to: "/section/knowledge" },
-    { num: "06", icon: "db", title: "Capacity Building", text: "", to: "/section/dialogue" },
+    { num: "06", icon: "db", title: "Dialogue", text: "", to: "/section/dialogue" },
   ],
 };
 

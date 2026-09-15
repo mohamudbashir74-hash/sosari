@@ -30,7 +30,7 @@ const FACEBOOK_LINK = "https://www.facebook.com/share/1adtVKQ2KX/";
 const LINKEDIN_LINK =
   "https://www.linkedin.com/company/somali-statistics-and-research-institute-sosari/";
 const INSTAGRAM_LINK = "#";
-const EMAIL_LINK = "mailto:info@sosari.so";
+const EMAIL_LINK = "mailto:Info@sosari.org";
 
 const COLUMN_ICON = {
   INSTITUTE: IconInstitution,
@@ -160,7 +160,7 @@ export default function Footer() {
                 </span>
                 <div>
                   <strong>Email Us</strong>
-                  <a href={EMAIL_LINK}>info@sosari.so</a>
+                  <a href={EMAIL_LINK}>Info@sosari.org</a>
                 </div>
               </div>
 
@@ -196,8 +196,6 @@ export default function Footer() {
               <Link to="/safeguarding">Safeguarding</Link>
               <span>•</span>
               <Link to="/accessibility">Accessibility</Link>
-              <span>•</span>
-              <Link to="/admin/login">Admin</Link>
             </div>
 
 
@@ -205,6 +203,10 @@ export default function Footer() {
             <div className="sosariFlag" aria-label="Somalia flag" title="Somalia">
               <span>★</span>
             </div>
+
+            <Link to="/admin/login" className="sosariAdminButton">
+              Admin
+            </Link>
 
             <button
               type="button"
@@ -326,7 +328,7 @@ export default function Footer() {
                 </span>
                 <div>
                   <strong>Email</strong>
-                  <small>info@sosari.so</small>
+                  <small>Info@sosari.org</small>
                 </div>
               </a>
             </div>
@@ -740,6 +742,29 @@ export default function Footer() {
           font-size: 16px;
           line-height: 1;
           text-shadow: 0 1px 2px rgba(0,0,0,.15);
+        }
+
+        .sosariAdminButton {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 11px 26px;
+          border-radius: 50px;
+          background: linear-gradient(90deg, var(--orange), var(--orange2));
+          color: #fff;
+          font-weight: 900;
+          font-size: 14px;
+          letter-spacing: .3px;
+          text-decoration: none;
+          white-space: nowrap;
+          box-shadow: 0 10px 26px rgba(0,0,0,.22);
+          transition: transform .2s ease, box-shadow .2s ease;
+        }
+
+        .sosariAdminButton:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 14px 32px rgba(0,0,0,.28);
+          color: #fff;
         }
 
         .sosariTopButton {
